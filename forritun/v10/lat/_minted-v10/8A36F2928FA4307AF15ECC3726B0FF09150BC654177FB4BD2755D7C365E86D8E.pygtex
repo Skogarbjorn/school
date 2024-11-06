@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Notkun: powerList n}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Fyrir:  n er heiltala n \PYGZgt{}= 0}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Gildi:  Listi allra mögulegra lista sem eru}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}         undirlistar listans [1,2,...,n].}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}         Fjöldi staka er þá 2\PYGZca{}n}
+\PYG{n+nf}{powerList}\PYG{+w}{ }\PYG{n}{n}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{    }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{[]}\PYG{p}{]}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{powerList}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{m}\PYG{o}{++}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{powerList}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{))]}
+\end{Verbatim}

@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Notkun: hopverk2 x}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Fyrir:  x er listi lista af fleytitölum.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Gildi:  Margfeldi af summunum af gildum innri lista x.}
+\PYG{n+nf}{hopverk2}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{foldl}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{*}\PYG{p}{)}\PYG{+w}{ }\PYG{l+m+mf}{1.0}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{map}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{foldl}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{+}\PYG{p}{)}\PYG{+w}{ }\PYG{l+m+mf}{0.0}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{)}
+\end{Verbatim}

@@ -1,0 +1,66 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{initCache}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{cache}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{cache\PYGZus{}set\PYGZus{}t}\PYG{o}{*}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{malloc}\PYG{p}{(}\PYG{n}{S}\PYG{o}{*}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{cache\PYGZus{}set\PYGZus{}t}\PYG{p}{));}
+\PYG{+w}{	}\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{S}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{++}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{		}\PYG{n}{cache}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{cache\PYGZus{}line\PYGZus{}t}\PYG{o}{*}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{malloc}\PYG{p}{(}\PYG{n}{E}\PYG{o}{*}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{cache\PYGZus{}line\PYGZus{}t}\PYG{p}{));}
+\PYG{+w}{	}\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{freeCache}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{	}\PYG{n}{free}\PYG{p}{(}\PYG{n}{cache}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{accessData}\PYG{p}{(}\PYG{n}{mem\PYGZus{}addr\PYGZus{}t}\PYG{+w}{ }\PYG{n}{addr}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{	}\PYG{k+kt}{long}\PYG{+w}{ }\PYG{n}{set}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{addr}\PYG{+w}{ }\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{p}{((}\PYG{l+m+mi}{1ULL}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{	}\PYG{k+kt}{long}\PYG{+w}{ }\PYG{n}{tag}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{addr}\PYG{+w}{ }\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{s}\PYG{o}{+}\PYG{n}{b}\PYG{p}{);}
+
+\PYG{+w}{	}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{has\PYGZus{}hit}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{	}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{insert\PYGZus{}place}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{;}
+\PYG{+w}{	}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{lowest\PYGZus{}value}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{policy\PYGZus{}code}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{cache}\PYG{p}{[}\PYG{n}{set}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{].}\PYG{n}{lru}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{cache}\PYG{p}{[}\PYG{n}{set}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{].}\PYG{n}{fifo}\PYG{p}{;}
+\PYG{+w}{	}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{lowest\PYGZus{}index}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+
+\PYG{+w}{	}\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{E}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{++}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+
+\PYG{+w}{		}\PYG{n}{cache\PYGZus{}line\PYGZus{}t}\PYG{+w}{ }\PYG{n}{line}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{cache}\PYG{p}{[}\PYG{n}{set}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+
+\PYG{+w}{		}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{policy\PYGZus{}code}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{lowest\PYGZus{}value}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{line}\PYG{p}{.}\PYG{n}{lru}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{n}{lowest\PYGZus{}value}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{line}\PYG{p}{.}\PYG{n}{lru}\PYG{p}{;}
+\PYG{+w}{				}\PYG{n}{lowest\PYGZus{}index}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}
+\PYG{+w}{			}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}\PYG{+w}{ }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{policy\PYGZus{}code}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{lowest\PYGZus{}value}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{line}\PYG{p}{.}\PYG{n}{fifo}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{n}{lowest\PYGZus{}value}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{line}\PYG{p}{.}\PYG{n}{fifo}\PYG{p}{;}
+\PYG{+w}{				}\PYG{n}{lowest\PYGZus{}index}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}
+\PYG{+w}{			}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{		}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{line}\PYG{p}{.}\PYG{n}{valid}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{line}\PYG{p}{.}\PYG{n}{tag}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{tag}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{n}{line}\PYG{p}{.}\PYG{n}{lru}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{lru\PYGZus{}counter}\PYG{p}{;}
+\PYG{+w}{			}\PYG{n}{hit\PYGZus{}count}\PYG{o}{++}\PYG{p}{;}
+\PYG{+w}{			}\PYG{n}{has\PYGZus{}hit}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{			}\PYG{n}{cache}\PYG{p}{[}\PYG{n}{set}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{line}\PYG{p}{;}
+\PYG{+w}{			}\PYG{k}{break}\PYG{p}{;}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{		}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{n}{line}\PYG{p}{.}\PYG{n}{valid}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{n}{insert\PYGZus{}place}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{	}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{	}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{n}{has\PYGZus{}hit}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{		}\PYG{n}{miss\PYGZus{}count}\PYG{o}{++}\PYG{p}{;}
+\PYG{+w}{		}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{insert\PYGZus{}place}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{n}{insert\PYGZus{}place}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{policy\PYGZus{}code}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{rand}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZpc{}}\PYG{+w}{ }\PYG{n}{E}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{lowest\PYGZus{}index}\PYG{p}{;}
+\PYG{+w}{			}\PYG{n}{eviction\PYGZus{}count}\PYG{o}{++}\PYG{p}{;}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{		}\PYG{n}{cache\PYGZus{}line\PYGZus{}t}\PYG{+w}{ }\PYG{n}{line\PYGZus{}to\PYGZus{}be\PYGZus{}added}\PYG{p}{;}
+\PYG{+w}{		}\PYG{n}{line\PYGZus{}to\PYGZus{}be\PYGZus{}added}\PYG{p}{.}\PYG{n}{tag}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{tag}\PYG{p}{;}
+\PYG{+w}{		}\PYG{n}{line\PYGZus{}to\PYGZus{}be\PYGZus{}added}\PYG{p}{.}\PYG{n}{fifo}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{fifo\PYGZus{}counter}\PYG{o}{++}\PYG{p}{;}
+\PYG{+w}{		}\PYG{n}{line\PYGZus{}to\PYGZus{}be\PYGZus{}added}\PYG{p}{.}\PYG{n}{lru}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{lru\PYGZus{}counter}\PYG{o}{++}\PYG{p}{;}
+\PYG{+w}{		}\PYG{n}{line\PYGZus{}to\PYGZus{}be\PYGZus{}added}\PYG{p}{.}\PYG{n}{valid}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{		}\PYG{n}{cache}\PYG{p}{[}\PYG{n}{set}\PYG{p}{][}\PYG{n}{insert\PYGZus{}place}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{line\PYGZus{}to\PYGZus{}be\PYGZus{}added}\PYG{p}{;}
+\PYG{+w}{	}\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

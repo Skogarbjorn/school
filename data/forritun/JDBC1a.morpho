@@ -1,0 +1,17 @@
+;;; Höfundur: Snorri Agnarsson, 2017-2023
+
+val driver = sqlGetDriver("sqlite-jdbc-3.43.0.0.jar","org.sqlite.JDBC");
+val conn = sqlGetConnectionFromDriver(driver,"jdbc:sqlite:company.db");
+
+write("Enter a Social Security Number: ");
+val ssn = readLine();
+
+;;; Ekki gera svona (munið Bobby Tables):
+sqlForAll(var name, var salary)
+fromQuery(conn,"select Lname, Salary from EMPLOYEE where ssn = \""++ssn++"\"")
+do
+{
+	writeln(name++" "++salary);
+};
+
+sqlClose(conn);

@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Gagnasafnsfræði Verkefni 10}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\begin{verbatim}
+SELECT Lname
+FROM EMPLOYEE AS E1
+WHERE Super_ssn NOT NULL AND EXISTS
+   (SELECT Super_ssn
+    FROM EMPLOYEE AS E2
+    WHERE E1.Ssn = E2.Super_ssn);
+	\end{verbatim}
+	\begin{center}
+		\includegraphics[scale=0.25]{1.png}
+	\end{center}
+
+	\section{}
+	\begin{verbatim}
+SELECT Lname
+FROM EMPLOYEE, DEPARTMENT
+WHERE Ssn = Mgr_ssn
+AND NOT (SELECT Pnumber FROM PROJECT WHERE Dnum = Dno)
+      = (SELECT Pno FROM WORKS_ON WHERE Essn = Ssn);
+	\end{verbatim}
+	\begin{center}
+		\includegraphics[scale=0.25]{2.png}
+	\end{center}
+
+	\section{}
+	\begin{verbatim}
+SELECT Lname
+FROM EMPLOYEE, WORKS_ON
+WHERE NOT EXISTS
+   (SELECT Essn 
+    FROM WORKS_ON 
+    WHERE Essn = Ssn);
+	\end{verbatim}
+	\begin{center}
+		\includegraphics[scale=0.25]{3.png}
+	\end{center}
+
+	\section{}
+	\begin{verbatim}
+SELECT Fname, Lname
+FROM EMPLOYEE
+WHERE NOT EXISTS
+   (SELECT Pnumber
+    FROM PROJECT
+    WHERE NOT EXISTS
+       (SELECT Essn
+        FROM WORKS_ON
+        WHERE Pno = Pnumber
+        AND Essn = Ssn));
+	\end{verbatim}
+	\begin{center}
+		\includegraphics[scale=0.25]{4.png}
+	\end{center}
+\end{document}

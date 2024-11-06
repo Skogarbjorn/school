@@ -1,0 +1,59 @@
+"msort.mexe" = main in
+{{
+main = fun()
+	{
+		;;; Notkun: y = sort(x);
+		;;; Fyrir:  x er listi talna.
+		;;; Eftir:  y er listi sem inniheldur sömu gildi
+		;;;         og x en í vaxandi röð.
+		rec fun sort(x)
+		{
+			;;; Notkun: split(x,&y,&z);
+			;;; Fyrir:  x er listi.
+			;;; Eftir:  y og z innihalda lista þannig að
+			;;;         samskeyting þeirra inniheldur öll
+			;;;         gildi x, en e.t.v. í annarri röð.
+			;;;         Mismunur lengda y og z er í mesta
+			;;;         lagi einn.
+			rec fun split(x,&y,&z)
+			{
+				if (x != [])
+				{
+					y = head(x):y;
+					split(tail(x), &z, &y);
+				}
+			};
+
+			;;; Notkun: z = merge(x,y);
+			;;; Fyrir:  x og y eru listar sem innihalda
+			;;;         tölur.
+			;;;         Báðir listarnir eru í vaxandi röð
+			;;; Eftir:  z inniheldur öll gildin úr x og y
+			;;;         í vaxandi röð.
+			rec fun merge(x,y)
+			{
+				if (x == []) { return y };				
+				if (y == []) { return x };
+				if (head(x) < head(y))
+				{
+					return head(x) : merge(tail(x), y);
+				};
+				return head(y) : merge(x, tail(y));
+			};
+
+			if (x == [] || tail(x) == []) { return x };
+			var y = [], z = [];
+			split(x, &y, &z);
+			writeln(y);
+			writeln(z);
+			return merge(sort(y), sort(z));
+		};
+		writeln(sort([32,1,5,3,2,45,2,6,2]));
+		writeln(sort([]));
+	};
+
+}}
+*
+BASIS
+;
+

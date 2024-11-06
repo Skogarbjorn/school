@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Formal Languages and Computability 10}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	We see that the big $O$ of $f(n)$ is $O(n^2)$.
+	\begin{itemize}
+		\item[a)] This grows slower than $n^2$ so this is true.
+		\item[b)] $2^n$ grows faster than $n^2$ so this is false.
+		\item[c)] $n^4$ grows faster than $n^2$ so this is false.
+		\item[d)] We see that this depends on whether $log_2n^n$ grows 
+			faster than $n$, and we can rewrite $log_2n^n$ as 
+			$n + log_2\frac{n}{2}^n$ which we can see grows faster than $n$ 
+			so this is true.
+		\item[e)] Since $2^n$ grows faster than $n^2$ is this true.
+	\end{itemize}
+	So a), d) and e) are true.
+
+	\section{}
+	\begin{itemize}
+		\item[a)] We see that each revolution takes $n + n + 2 = 2n + 2$ 
+			steps, and the number of revolutions is $\frac{n}{4}$ since 
+			if the length of the string is $n$, then the number of dibits 
+			is $\frac{n}{2}$ and then the number of pairs of dibits is 
+			$\frac{n}{4}$. Then we just subtract the final rewind step 
+			since that isnt executed on the final step and we get 
+			$\frac{n}{4}(2n+2) - n = \frac{1}{2}(n^2 - n)$.
+		\item[b)] No, since we get
+			\[
+				\lim_{n\to\infty} \frac{n^2}{\nicefrac{1}{2}(n^2 - n)} = 
+				\lim_{n\to\infty} \frac{n^2}{n^2(\nicefrac{1}{2} - \nicefrac{1}{2n})} 
+			\]
+			\[
+				= \lim_{n\to\infty} \frac{1}{\nicefrac{1}{2} - \nicefrac{1}{2n}}
+				= \frac{1}{\nicefrac{1}{2}} = 2 \neq 0
+			\]
+			So $n^2$ grows at a faster pace than $\frac{1}{2}(n^2 - n)$.
+		\item[c)] A faster version of this algorithm would be to have
+			it blank out the left side pairs as soon as we begin the search 
+			for a pair, so we travel back and forth the tape with an average 
+			of only $n$ steps, making the exact running time 
+			$\frac{n}{4}(n + 2) - \frac{n}{2} = \nicefrac{n^2}{4}$
+	\end{itemize}
+
+	\newpage
+	\section{}
+	\begin{itemize}
+		\item[a)] Tabulating the times for $n = 1,...,7$ we get
+
+			\begin{center}
+				\begin{tabular}[c]{|l|l|l|l|l|l|l|l|}
+					\hline
+					\textbf{Length} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} \\
+					\hline
+					\hline
+					\textbf{Steps} & $2$ & $3$ & $6$ & $13$ & $28$ & $59$ & $122$ \\
+					\hline
+				\end{tabular}
+			\end{center}
+		
+		\item[b)] We simply experiment enough until we get the formula 
+			\begin{equation}
+				r(n+1) = 2r(n) + n - 2
+				\label{eq:gamer}
+			\end{equation}
+		\item[c)] To find the exact closed form expression we will use 
+			the formula for a linear first order difference equation of the 
+			form $x(n+1) = a(n)x(n) + c(n)$,
+
+			\begin{equation}
+				y(n) = \left( \prod_{k=1}^{n-1} a(k) \right)y_0 
+				+ \sum_{k=1}^{n-1}\left( \prod_{j=k+1}^{n-1}a(j)\right)c(k)
+				\label{eq:gamer1}
+			\end{equation}
+
+			Where we get
+
+			\[
+				r(n) = \left( \prod_{k=1}^{n-1} 2 \right)\cdot 2
+				+ \sum_{k=1}^{n-1}\left( \prod_{j=k+1}^{n-1}2\right)\cdot(k-2)
+			\]
+			\[
+				= 2^n + \sum_{k=1}^{n-1} k2^{n-k-1} - 2^{n-k}
+			= 2^n + 2^{n-1}\sum_{k=1}^{n-1}\frac{k}{2^k} - 2^n\sum_{k=1}^{n-1}\frac{1}{2^k}
+			\]
+			\[
+				= 2^n - n + 1
+			\]
+			So the closed form is $r(n) = 2^n - n + 1$.
+	\end{itemize}
+
+	\section{}
+	So the algorithm goes like this, we first mark one node, then, we 
+	iterate through each node in $G$ to check if it is connected to 
+	any marked node and if so, we mark it. We then continue until no 
+	new nodes are marked. At last we iterate through each node and check 
+	if any remain unmarked, if so we reject otherwise we accept.
+
+	Looking at the worst (not even possible) case of this, we get that 
+	we have to iterate through every node (n times) and for each node 
+	we assume that they are connected to every other node, meaning we 
+	check $n-1$ paths for each node. We then do all this a maximum of 
+	$n-1$ times since at least one node must be marked every time, and 
+	then one more time to confirm everything which leaves it at $n$ times.
+
+	We then get that the theoretical maximum amount of steps for this is 
+	$n * (n-1) * n = n^3 - n^2$, which is clearly in $P$.
+
+\end{document}

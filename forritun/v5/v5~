@@ -1,0 +1,557 @@
+;; Aðgerðir á óendanlega strauma og taylor raðir
+
+;; Höfundur: Snorri Agnarsson
+
+;; Fyrir PC-Scheme verðum við að gefa stream-car og stream-cdr gildi
+;; (sleppum næstu tveimur línum í MIT-Scheme og DrScheme):
+;(define stream-car head)
+;(define stream-cdr tail)
+
+;; Fyrir DrScheme:
+(define (-1+ n) (- n 1))
+(define (1+ n) (+ n 1))
+(define-syntax cons-stream
+  (syntax-rules ()
+    ((cons-stream head tail)
+     (cons head (delay tail))
+     ;(cons head (lambda () tail))
+    )
+  )
+)
+(define stream-car car)
+(define (stream-cdr s) (force (cdr s)))
+;(define (stream-cdr s) ((cdr s)))
+;; Lok kafla fyrir DrScheme
+
+;; Notkun: einn
+;; Gildi:  straumurinn [1 1 ...]
+(define einn
+    (letrec ((temp (cons-stream 1 temp)))
+        temp
+    )
+)
+
+;; Notkun: (stream-map f s)
+;; Fyrir:  f er einundaraðgerð, s=[s1 s2 ...] er óendanlegur
+;;         straumur viðfanga í f
+;; Gildi:  óendanlegi straumurinn [(f s1) (f s2) ...]
+(define (stream-map f s)
+    (cons-stream (f (stream-car s)) (stream-map f (stream-cdr s)))
+)
+
+;; Notkun: (stream-binop f x y)
+;; Fyrir:  f er tvíundaraðgerð, x=[x1 x2 ...] og y=[y1 y2 ...]
+;;         eru óendanlegir straumar fyrri og seinni viðfanga í f
+;; Gildi:  óendanlegi straumurinn [(f x1 y1) (f x2 y2) ...]
+(define (stream-binop + x y)
+    (cons-stream 
+        (+ (stream-car x) (stream-car y))
+        (stream-binop + (stream-cdr x) (stream-cdr y))
+    )
+)
+
+;; Notkun: heil
+;; Gildi:  óendanlegi straumurinn [1 2 3 ...]
+(define heil
+    (letrec ((temp (cons-stream 1 (stream-map 1+ temp))))
+        temp
+    )
+)
+
+;; Notkun: (stream-list x n)
+;; Fyrir:  x=[x1 x2 ...] er straumur af lengd a.m.k. n, n er heiltala >=0
+;; Gildi:  listinn (x1 x2 ... xn)
+(define (stream-list x n)
+	(if (= n 0)
+		'()
+		(cons (stream-car x) (stream-list (stream-cdr x) (-1+ n)))
+	)
+)
+
+;; Notkun: fibo
+;; Gildi:  óendanlegur straumur Fibonacci talna: [1 1 2 3 5 8 ...]
+(define fibo
+	(cons-stream 1
+	    (cons-stream
+                1
+                (stream-binop + fibo (stream-cdr fibo))
+            )
+        )
+)
+
+;; Notkun: fact
+;; Gildi:  óendanlegur straumur hrópmerktra talna: [0! 1! 2! ...]
+(define fact
+    (cons-stream 1 (stream-binop * fact heil))
+)
+
+;; Eftirfarandi kafli útfærir óendanlegar Taylor raðir.
+;; Taylor röðin a_0+a_1*x+a_2*x^2+... er táknuð með straumnum
+;; [a_0 a_1 ...]
+
+;; Notkun: taylor-zero
+;; Gildi:  Taylor röðin fyrir núll fallið: 0+0x+0x^2+...
+(define taylor-zero
+    (letrec ((temp (cons-stream 0 temp))) temp)
+)
+
+;; Nú viljum við fá fall sem heildar Taylor raðir, með eftirfarandi
+;; lýsingu:
+
+;; Notkun: (taylor-integrate c s)
+;; Fyrir:  c er tala, s er Taylor röð
+;; Gildi:  Taylor röðin fyrir c + heildið af s frá 0 til x
+
+;; Eftirfarandi er e.t.v. fyrsta útfærslan á slíku falli, sem okkur
+;; dettur í hug, en þessi útfærsla hefur þann galla að ekki er hægt
+;; að heilda fall fyrr en búið er að skilgreina það (eða a.m.k. fyrsta
+;; liðinn í því.
+;(define (taylor-integrate c s)
+;    (cons-stream c (stream-binop / s heil))
+;)
+;; Það sem við viljum er útfærsla þ.a. segðin (taylor-integrate c s)
+;; sé jafngilt segðinni (cons-stream c (stream-binop / s heil)),
+;; fyrir hvaða Taylor segð s og tölu s sem er.
+;; Vandamálið er að þetta er þá ekki hægt að útfæra sem venjulegt
+;; fall, því venjulegt fall myndi gilda segðina s áður en kallað
+;; er á taylor-integrate.
+;; Við getum leyst málið með því að skilgreina fjölva:
+
+;; Notkun: (taylor-integrate x s)
+;; Fyrir:  c er tala, s er segð, sem skilar Taylor röð
+;; Gildi:  Taylor röðin fyrir c + heildið af s frá 0 til x
+;; Aths.:  s þarf ekki að skila gildi fyrr en reiknaður
+;;         er halinn á útkomunni
+
+
+;; Þessi útgáfa er fyrir DrScheme:
+(define-syntax taylor-integrate
+  (syntax-rules ()
+    ((taylor-integrate c s)
+     (cons-stream c (stream-binop / s heil))
+    )
+  )
+)
+
+;; Þessi útgáfa er fyrir MIT-Scheme:
+;(define-syntax taylor-integrate 
+;    (lambda (c s)
+;        `(cons-stream ,c (stream-binop / ,s heil))
+;    )
+;)
+
+;; Þessi útgáfa er fyrir PC-Scheme:
+;(macro taylor-integrate
+;    (lambda (form)
+;        (let ((c (cadr form)) (s (caddr form)))
+;            `(cons-stream ,c (stream-binop / ,s heil))
+;        )
+;    )
+;)
+
+;; Við skilgreinum nú nokkrar Taylor raðir með gagnkvæmri heildun.
+;; Fyrstu fjórar eru með brotastuðlum í þeim afbrigðum af Scheme,
+;; sem bjóða upp á það (t.d. MIT-Scheme), en með fleytitölustuðlum
+;; í öðrum (t.d. PC-Scheme).
+
+;; Notkun: taylor-sin
+;; Gildi:  Taylor röðin fyrir sin
+(define taylor-sin (taylor-integrate 0 taylor-cos))
+
+;; Notkun: taylor-cos
+;; Gildi:  Taylor röðin fyrir cos
+(define taylor-cos (taylor-integrate 1 taylor-msin))
+
+;; Notkun: taylor-msin
+;; Gildi:  Taylor röðin fyrir -sin
+(define taylor-msin (taylor-integrate 0 taylor-mcos))
+
+;; Notkun: taylor-mcos
+;; Gildi:  Taylor röðin fyrir -cos
+(define taylor-mcos (taylor-integrate -1 taylor-sin))
+
+;; Næstu fjórar eru svipaðar, en stuðlarnir eru alltaf fleytitölur
+
+(define taylor-sinf (taylor-integrate 0.0 taylor-cosf))
+(define taylor-cosf (taylor-integrate 1.0 taylor-msinf))
+(define taylor-msinf (taylor-integrate 0.0 taylor-mcosf))
+(define taylor-mcosf (taylor-integrate -1.0 taylor-sinf))
+
+;; Notkun: (taylor-diff s)
+;; Fyrir:  s er Taylor röð
+;; Gildi:  Taylor röðin fyrir diffurkvóta s
+(define (taylor-diff s)
+    (stream-binop * (stream-cdr s) heil)
+)
+
+;; Notkun: (taylor+ a b)
+;; Fyrir:  a og b eru Taylor raðir eða tölur
+;; Gildi:  Taylor röðin fyrir a+b, eða talan a+b ef báðar eru tölur
+(define (taylor+ x y) 
+    (if (number? x)
+        (if (number? y)
+            (+ x y)
+            (cons-stream (+ x (stream-car y)) (stream-cdr y))
+        )
+        (if (number? y)
+            (cons-stream (+ (stream-car x) y) (stream-cdr x))
+            (stream-binop + x y)
+        )
+    )
+)
+
+;; Notkun: (taylor- a b)
+;; Fyrir:  a og b eru Taylor raðir eða tölur
+;; Gildi:  Taylor röðin fyrir a-b, eða talan a-b ef báðar eru tölur
+(define (taylor- x y)
+    (if (number? x)
+        (if (number? y)
+            (- x y)
+            (taylor- (cons-stream x taylor-zero) y)
+        )
+        (if (number? y)
+            (cons-stream (- (stream-car x) y) (stream-cdr x))
+            (stream-binop - x y)
+        )
+    )
+)
+
+;; Notkun: (taylor* a b)
+;; Fyrir:  a og b eru Taylor raðir eða tölur
+;; Gildi:  Taylor röðin fyrir a*b, eða talan a*b ef báðar eru tölur
+(define (taylor* x y)
+    ;; Notkun: (taylor* a b)
+    ;; Fyrir:  a og b eru Taylor raðir
+    ;; Gildi:  Taylor röðin fyrir a*b
+    (define (help x y)
+        (taylor+
+            (taylor* (stream-car x) y)
+            (cons-stream 0 (taylor* (stream-cdr x) y))
+        )
+    )
+    (if (number? x)
+        (if (number? y)
+            (* x y)
+            (stream-map (lambda (y) (* x y)) y)
+        )
+        (if (number? y)
+            (stream-map (lambda (x) (* x y)) x)
+            (help x y)
+        )
+    )
+)
+
+;; Notkun: (taylor/ a b)
+;; Fyrir:  a og b eru Taylor raðir eða tölur
+;;         b má ekki vera núll, og a verður að hafa a.m.k. jafn
+;;         marga núll liði fremst og b
+;; Gildi:  Taylor röðin fyrir a/b, eða talan a/b ef báðar eru tölur
+(define (taylor/ x y)
+    ;; Notkun: (help a b)
+    ;; Fyrir:  a og b eru Taylor raðir
+    ;;         a verður að hafa a.m.k. jafn marga núll liði fremst og b
+    ;; Gildi:  Taylor röðin fyrir a/b
+    (define (help x y)
+        (if (= (stream-car y) 0)
+            (if (= (stream-car x) 0)
+                (help (stream-cdr y) (stream-cdr x))
+                (/ 0 (stream-car x))
+            )
+            (let
+                (
+                    (z0 (/ (stream-car x) (stream-car y)))
+                )
+                (cons-stream
+                    z0
+                    (help (taylor- (stream-cdr x) (taylor* z0 (stream-cdr y))) y)
+                )
+            )
+        )
+    )
+    (if (number? y)
+        (if (number? x)
+            (/ x y)
+            (stream-map (lambda (x) (/ x y)) x)
+        )
+        (if (number? x)
+            (help (cons-stream x taylor-zero) y)
+            (help x y)
+        )
+    )
+)
+
+;; Notkun: (taylor-eval f x n)
+;; Fyrir:  f er Taylor röð, x er tala, n er heiltala >=0
+;; Gildi:  Summa fyrstu n liða Taylor raðarinnar með gefnu gildi x
+(define (taylor-eval f x n)
+    (if (= n 0)
+        0
+        (+ (stream-car f) (* x (taylor-eval (stream-cdr f) x (-1+ n))))
+    )
+)
+
+;; Notkun: taylor-x
+;; Gildi:  Taylor röðin fyrir fallið f(x)=x
+(define taylor-x
+    (cons-stream 0 (cons-stream 1 taylor-zero))
+)
+
+;; Notkun: taylor-ln_1+x
+;; Gildi:  Taylor röðin fyrir fallið f(x)=ln(1+x)
+(define taylor-ln_1+x
+    (taylor-integrate 0 (taylor/ 1 (taylor+ 1 taylor-x)))
+)
+
+;; Notkun: taylor-exp
+;; Gildi:  Taylor röðin fyrir fallið exp
+(define taylor-exp (taylor-integrate 1 taylor-exp))
+
+;; Notkun: taylor-tan
+;; Gildi:  Taylor röðin fyrir fallið tan (brotastuðlar ef Scheme
+;;         ræður við það)
+(define taylor-tan (taylor/ taylor-sin taylor-cos))
+
+;; Notkun: taylor-tanf
+;; Gildi:  Taylor röðin fyrir fallið tan (fleytitölustuðlar)
+(define taylor-tanf (taylor/ taylor-sinf taylor-cosf))
+
+;; Notkun: (taylor-compose f g)
+;; Fyrir:  f og g eru Taylor raðir, g(0)=0
+;; Gildi:  Taylor röðin fyrir fallið f o g
+(define (taylor-compose f g)
+    (if (= (stream-car g) 0)
+        (cons-stream
+            (stream-car f)
+            (taylor* (stream-cdr g) (taylor-compose (stream-cdr f) g))
+        )
+        (/ 1 0)
+    )
+)
+
+;; Notkun: (taylor-general-inverse f g)
+;; Fyrir:  f og g eru Taylor raðir, g(0)=0
+;; Gildi:  Taylor röð fyrir fall h þ.a. h o g = f
+(define (taylor-general-inverse f g)
+    (if (= (stream-car g) 0)
+        (cons-stream
+            (stream-car f)
+            (taylor-general-inverse
+                (taylor/ (stream-cdr f) (stream-cdr g))
+                g
+            )
+        )
+        (/ 1 0)
+    )
+)
+
+;; Notkun: (taylor-inverse f)
+;; Fyrir:  f er Taylor röð, f(0)=0
+;; Gildi:  Taylor röð fyrir andhverfa fallið við f,
+;;         þ.e.fall h þ.a. h o f = x = f o h
+(define (taylor-inverse f)
+    (taylor-general-inverse taylor-x f)
+)
+
+;; Notkun: taylor-asin
+;; Gildi:  Taylor röðin fyrir andhverfa fallið við sin
+;;         með brotastuðlum ef Scheme ræður við það,
+;;         annars fleytitölustuðlum
+(define taylor-asin (taylor-inverse taylor-sin))
+
+;; Notkun: taylor-asinf
+;; Gildi:  Taylor röðin fyrir andhverfa fallið við sin
+;;         með fleytitölustuðlum
+(define taylor-asinf (taylor-inverse taylor-sinf))
+
+;; Notkun: taylor-atan
+;; Gildi:  Taylor röðin fyrir andhverfa fallið við tan
+;;         með brotastuðlum ef Scheme ræður við það,
+;;         annars fleytitölustuðlum
+(define taylor-atan (taylor-inverse taylor-tan))
+
+;; Notkun: taylor-atanf
+;; Gildi:  Taylor röðin fyrir andhverfa fallið við tan
+;;         með fleytitölustuðlum
+(define taylor-atanf (taylor-inverse taylor-tanf))
+
+;; Notkun: (modpow p q r)
+;; Fyrir: p, q og r eru heiltölur og q >= 0, 0 <= p < r
+;;        og r > 1.
+;; Gildi: p^q mod r, semsagt afgangur p^q þegar deilt
+;;        með r.
+(define (modpow p q r)
+  ;; Notkun: (modhelp _p q total)
+  ;; Fyrir: _p, q og total eru heiltölur,
+  ;;        0 <= _p < r, q >= 0, 0 <= total < r
+  ;; Gildi: _p^q mod r, semsagt afgangur _p^q þegar deilt með r
+  (define (modhelp _p q total)
+    (if (= q 0)
+        (remainder total r)
+        (if (= (remainder q 2) 0)
+            (modhelp (remainder (* _p _p) r) (/ q 2) total)
+            (modhelp (remainder (* _p _p) r) (/ (- q 1) 2) (remainder (* total _p) r))
+            )
+        )
+    )
+  (modhelp p q 1)
+  )
+(modpow 123 1234567890 12345678901)
+(modpow 2 10 10000)
+
+;; Notkun: (cornerstream s n)
+;; Fyrir: s er óendanlegur straumur óendanlegra
+;;        strauma,
+;;        s=[[x11 x12 ...],[x21 x22 ...] ...].
+;;        n er heiltala, n>=0.
+;; Gildi: Listinn
+;;        ((x11 x12 ... x1n)
+;;        (x21 x22 ... x2n)
+;;        ...
+;;        (xn1 xn2 ... xnn)
+;;        )
+(define (cornerstream s n)
+  ;; Notkun: (makelist substream index)
+  ;; Fyrir: substream er óendanlegur straumur, [x1, x2, ..., ],
+  ;;        index er heiltala, 0 <= index <= n
+  ;; Gildi: Listinn (x1, x2, ... , x_index)
+  (define (makelist substream index)
+    (if (= index 0)
+        '()
+        (cons (stream-car substream) (makelist (stream-cdr substream) (- index 1)))
+        )
+    )
+  ;; Notkun: (cornerhelp stream index)
+  ;; Fyrir: stream er óendanlegur straumur óendanlegra
+  ;;        strauma [[x11, x12, ...], [x21, x22, ...], ...],
+  ;;        index er heiltala, 0 <= index <= n
+  ;; Gildi: Listinn ((x11, x12, ..., x1n),
+  ;;                 (x21, x22, ..., x2n),
+  ;;                 ...
+  ;;                 (x_index1, x_index2, ..., x_indexn))
+  (define (cornerhelp stream index)
+    (if (= index 0)
+        '()
+        (cons (makelist (stream-car stream) n) (cornerhelp (stream-cdr stream) (- index 1)))
+        )
+    )
+  (cornerhelp s n)
+  )
+
+
+;; Notkun: (mulstreams x y)
+;; Fyrir: x og y eru óendanlegir straumar talna,
+;; x=[x1 x2 x3 ...].
+;; y=[y1 y2 y3 ...].
+;; Gildi: Óendanlegur straumur óendanlegra strauma
+;; talna sem er
+;; [[x1*y1 x2*y1 x3*y1 ...]
+;; [x1*y2 x2*y2 x3*y2 ...]
+;; [x1*y3 x2*y3 x3*y3 ...]
+;; ...
+;; ]
+(define (mulstreams x y)
+  ;; Notkun: (mulhelp x yval)
+  ;; Fyrir: x er óendanlegur straumur, [x1 x2 x3 ...],
+  ;;        yval er tala
+  ;; Gildi: óendanlegi straumurinn [x1*yval x2*yval ...]
+  (define (mulhelp x yval)
+    (cons-stream (* (stream-car x) yval) (mulhelp (stream-cdr x) yval))
+    )
+  (cons-stream (mulhelp x (stream-car y)) (mulstreams x (stream-cdr y)))
+  )
+
+(cornerstream (mulstreams heil heil) 4)
+
+;; Notkun: (powerlist n)
+;; Fyrir: n er heiltala, n>=0.
+;; Gildi: Listinn (y1 y2 y3 ...)
+;;        sem inniheldur alla lista sem
+;;        hægt er að smíða með því að taka
+;;        núll eða fleiri gildi úr {1,...,n}
+;;        og skeyta þeim saman í lista í
+;;        minnkandi röð.
+(define (powerlist n)
+  ;; Notkun: (addn l)
+  ;; Fyrir: l er listi, l = (l1 l2 ... ln)
+  ;; Gildi: Listinn (n l1 l2 ... ln)
+  (define (addn l)
+    (cons n l)
+    )
+  (if (= n 0)
+      '(())
+      (append (powerlist (- n 1)) (map addn (powerlist (- n 1))))
+      )
+  )
+(powerlist 3)
+(powerlist 0)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; anyways einstaklingsverkefni ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Notkun: (realpowrecursive x y)
+;; Fyrir: x er tala, y er heiltala, y >= 0
+;; Gildi: x^y
+;; Við nýtum okkur hér að ef y er slétt,
+;; þá getum við skrifað (x^2)^{y/2} en ef
+;; y er oddatala, þá getum við einnig skrifað
+;; x(x^2)^{(y-1)/2}.
+(define (realpowrecursive x y)
+  (if (= y 0)
+      1.0
+      (if (= (remainder y 2) 0)
+          (realpowrecursive (* x x) (/ y 2))
+          (* x (realpowrecursive (* x x) (/ (- y 1) 2)))
+          )
+      )
+  )
+(realpowrecursive 1.2 5)
+
+;; Notkun: (transpose-list z)
+;; Fyrir: z er listi jafnlangra lista,
+;; z=((x11 x12 ... x1N)
+;; (x21 x22 ... x2N)
+;; (x31 x32 ... x3N)
+;; .
+;; .
+;; .
+;; (xM1 xM2 ... xMN)
+;; )
+;; Gildi: Listinn sem er byltingin
+;; (transpose) af z, þ.e.
+;; ((x11 x21 ... xM1)
+;; (x12 x22 ... xM2)
+;; (x13 x23 ... xM3)
+;; .
+;; .
+;; .
+;; (x1N x2N ... xMN)
+;; )
+(define (transpose-list z)
+  ;; Notkun: (head u)
+  ;; Fyrir: u er listi (u1 u2 ... uN), N >= 0
+  ;; Gildi: Ef N = 0 þá z[0][0], þ.e. x11,
+  ;;        annars u1
+  (define (head u)
+    (if (null? (car u))
+        (car (car z))
+        (car u)
+        )
+    )
+  ;; Notkun: (tail u)
+  ;; Fyrir: u er listi (u1 u2 ... uN), N >= 0
+  ;; Gildi: (u2 u3 ... uN)
+  (define (tail u)
+    (if (null? (car u))
+        u
+        (cdr u)
+        )
+    )
+  (if (or (null? z) (null? (car z)))
+      '()
+      (cons (map head z) (transpose-list (map tail z)))
+      )
+  )
+(transpose-list '((1 2 3) (4 5 6)))
+(transpose-list '())
+                                                   

@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Notkun: listAll i n f}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Fyrir:  i og n eru gildi af tagi af klasa Enum,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}         f er fall sem tekur inn eitt viðfang}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}         af sama tagi.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Gildi:  Listinn [f(i),f(i+1),...,f(n)]}
+\PYG{n+nf}{listAll}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{f}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{i}\PYG{o}{..}\PYG{n}{n}\PYG{p}{]]}
+\end{Verbatim}

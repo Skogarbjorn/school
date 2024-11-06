@@ -1,0 +1,122 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+
+% Math
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+% Graphics
+
+\usepackage{graphicx}
+\usepackage{tikz}
+% Code environment
+\usepackage{minted}
+%\usepackage{bm}
+%\usepackage{siunitx}
+%\usepackage{animate}
+%\usepackage{hyperref}
+%\usepackage{movie15}
+%\usepackage{multicol}
+%\usepackage{changepage}
+\title{Gagnasafnsfræði Verkefni 5}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+	
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\begin{itemize}
+		\item[a)]
+			\begin{itemize}
+				\item[i.] $A \rightarrow B$ Gengur ekki, n-d 1 og 2 brjóta 
+					regluna vegna þess að gildin í $A$ fyrir þessar n-dir 
+					eru eins en eru ekki eins í $B$.
+				\item[ii.] $B \rightarrow C$ Gengur, allar n-dir í $B$ gefa 
+					sama í $C$ ef það er eins í $B$.
+				\item[iii.] $C \rightarrow B$ Gengur ekki, n-d 1 og 3 brjóta 
+					regluna vegna þess að gildin í $C$ fyrir þessar n-dir 
+					eru eins en eru ekki eins í $B$.
+				\item[iv.] $B \rightarrow A$ Gengur ekki, n-d 1 og 5 brjóta 
+					regluna vegna þess að gildin í $B$ fyrir þessar n-dir 
+					eru eins en eru ekki eins í $A$.
+				\item[v.] $C \rightarrow A$ Gengur ekki, n-d 1 og 3 brjóta 
+					regluna vegna þess að gildin í $C$ fyrir þessar n-dir 
+					eru eins en eru ekki eins í $A$.
+			\end{itemize}
+		\item[b)] Sjáum að þar sem $B \rightarrow C$ er eina fallákveðan, 
+			þá hljóta $A$ og $B$ að vera hluti af öllum mögulegum lyklum 
+			þar sem $A$ og $B$ koma aldrei fyrir hægra megin í fallákveðum. 
+			Einnig sést að $\{A,B\}^+ = \{A,B,C\}$ sem eru öll eigindin svo 
+			$AB$ er eini mögulegi lykillinn.
+	\end{itemize}
+
+	\section{}
+	Sjáum að eigindin sem koma ekki fram hægra megin á neinni fallákveðu 
+	eru $C$ og $D$ svo bæði $C$ og $D$ hljóta að vera hluti af öllum 
+	mögulegum lyklum. Einnig er $\{C,D\}^+ = \{A, B, C, D,E,F,G,H,I,J\}$ 
+	sem eru öll eigindin svo $CD$ er eini mögulegi lykillinn.
+
+	\section{}
+	\begin{itemize}
+		\item[a)]
+			\begin{itemize}
+				\item \textbf{Vensl 1} Eigindin sem koma ekki fram hægra 
+					megin í neinum fallákveðum er bara $B$. $B^+ = {B}$ svo 
+					við þurfum fleiri eigindi og þá sést að $\{A,B\}^+ = 
+					\{B,C\}^+ = \{B,D\}^+ = \{A,B,C,D\}$ svo $AB$, $BC$, 
+					$BD$ eru mögulegir lyklar.
+				\item \textbf{Vensl 2} Eigindin sem koma ekki fram hægra 
+					megin í neinum fallákveðum er bara $A$ og við sjáum að 
+					$A^+ = \{A,B,C,D\}$ svo $A$ er eini mögulegi lykillinn.
+			\end{itemize}
+		\item[b)] Yfirlyklar eru safn af dálkum sem innihalda mögulega 
+			lykla svo allir yfirlyklarnir sem eru ekki mögulegir lyklar eru
+			\begin{itemize} 
+			\item \textbf{Vensl 1} $ABC, ABD, ABCD, BCD$
+				\item \textbf{Vensl 2} $AB, AC, AD, ABC, ABD, ACD, ABCD$
+			\end{itemize}
+			Röð eiginda skiptir ekki máli þar sem hver yfirlykill er safn, 
+			þar sem röð staka skiptir ekki máli.
+	\end{itemize}
+
+	\section{}
+	\begin{itemize}
+		\item[$BCNF$] Byrjum á að finna alla mögulega lykla, sjáum að $B$ er 
+			eina eigindið sem er ekki hægra megin í neinum fallákveðum svo 
+			$B$ er hluti allra mögulega lykla. $B^+ = \{A,B,C,D\}$ svo $B$ 
+			er eini mögulegi lykillinn. Sjáum að fallákveðan $C \rightarrow 
+			AD$ brýtur regluna um $BCNF$ form þar sem $C$ er ekki yfirlykill.
+
+			Skiptum þá venslinu í $R_1(A,C,D)$ og $R_2(B,C)$ og þá er 
+			lykillinn í $R_1$ $C$ og lykillinn í $R_2$ $B$ og komið er á 
+			$BCNF$ form.
+
+			Einnig gildir þessi skipting fyrir $3NF$ form þar sem fyrir 
+			sérhverja fallákveðu $\bar{A} \rightarrow B$ er $\bar{A}$ 
+			yfirlykill.
+	\end{itemize}
+\end{document}

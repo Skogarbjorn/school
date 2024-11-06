@@ -1,0 +1,129 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Tölvutækni og Forritun Heimadæmi 10}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\begin{itemize}
+		\item[a)] Við byrjum með \texttt{0x2051} og framkvæmum svo 
+			\texttt{0x2051 | 12} (or-að við 12) sem gefur, ef við breytum yfir í 
+			tvíundakerfið, \texttt{0010000001010001 | 1100} svo við fáum 
+			\texttt{0010000001011101} sem, ef við svo framkvæmum \texttt{>{}> 3} (hliðrum um 3 til vinstri) 
+			á það fæst \texttt{10000001011} eða \texttt{0x40b}.
+		\item[b)] 
+			\begin{itemize}
+				\item[i.] Við sjáum að $13 = 1101_2$ og þá rennum við einu 
+					sinni í gegn og þá er \texttt{v = 1100}, rennum svo 
+					aftur og \texttt{v = 1000} og svo loks rennum við 
+					einu sinni enn og fæst \texttt{v = 0000} og við 
+					hættum. Svo í lokin er \texttt{v = 0} og 
+					\texttt{c = 3}.
+				\item[ii.] Almennt sjáum við að \texttt{v = 0} í lokin 
+					þar sem lykkjan hættir bara þegar \texttt{v} gefur 
+					falsgildið $0$. Svo verður \texttt{c} bara fjöldi ása 
+					í tvíundartölunni fyrir \texttt{v}.
+			\end{itemize}
+	\end{itemize}
+
+	\section{}
+	Sjáum að \texttt{i} er í \texttt{rdi}, \texttt{j} er í \texttt{rsi} og 
+	\texttt{k} er í \texttt{rdx}. Fyrst er \texttt{k} fært í skilagildi og 
+	við byrjum á samanburði á \texttt{i} og \texttt{j} og framkvæmum línu 
+	\texttt{8} ef sannur, annars hoppum við beint í annan samanburð sem 
+	aftur framkvæmir bara eina línu, \texttt{10}, ef sannur. Svo kóðinn er 
+	svona
+	\begin{minted}{c}
+int bla(int i, int j, int k) {
+	if (i >= j) {
+	    j = i;
+	}
+	if (j >= k) {
+	    return j;
+	}
+	return k;
+}
+	\end{minted}
+
+	\section{}
+	\begin{itemize}
+		\item[a)] Byrjum á \texttt{main.c}, \texttt{fun} er veikt, 
+			\texttt{b} er veikt vegna \texttt{extern}, \texttt{c} er sterkt 
+			og \texttt{main} er sterkt.
+
+			Í \texttt{fun.c} er \texttt{a} sterkt, \texttt{b} líka sterkt, 
+			\texttt{c} veikt vegna \texttt{extern} og \texttt{fun} er sterkt.
+		\item[b)] Það prentast út að a sé 0, b sé 3 og c sé 5. 
+			Þetta er líklega vegna þess að þegar við setjum \texttt{b = 3} 
+			þá er það að virka sem \texttt{int} í stað \texttt{short int} 
+			svo breytan í \texttt{fun.c} fær neðri partinn, en efri 
+			breytir óvart \texttt{short int a} í staðinn og \texttt{a} 
+			verður þá $0$.
+	\end{itemize}
+
+	\section{}
+	\begin{itemize}
+		\item[a)] Kyrrleg tenging getur verið betri þar sem óþarfi er að 
+			hafa öll söfnin sem forrit notar á tölvunni, þ.e. allt sem 
+			þarf fyrir forritið kemur með keyrsluskránni. Einnig veldur 
+			þetta því að kyrrleg tenging er fljótari þar sem ekki þarf að 
+			tengja söfn þegar forritinu er hlaðið í minni eða í miðri 
+			keyrslu, allt er nú þegar komið þegar forritið er þýtt.
+		\item[b)] Kvik tenging er oft betri vegna þess t.d. að 
+			keyrsluskrárnar verða miklu minni vegna þess að ekki þarf að 
+			pakka öllum notkunum í söfnum saman við forritið. Einnig er 
+			auðveldara að uppfæra söfn þar sem ekki þarf að endurþýða öll 
+			forrit sem nota það í hvert skipti sem það er uppfært. Svo 
+			geta líka mörg forrit notað sama minni fyrir safnið í einu.
+	\end{itemize}
+
+	\section{}
+	\begin{itemize}
+		\item[a)] Við sjáum að hér kemur villa þar sem eftir kallið á 
+			\texttt{f()} þá breytist \texttt{x} ekki í \texttt{a1.c} og 
+			helst sem $2$, í stað þess að breytast í $4$. Þetta er vegna 
+			þess að þó við skilgreinum \texttt{extern int x} sem tengist 
+			við \texttt{x}-ið í \texttt{a2.c} þá er þessi skilgreining veik 
+			og þess vegna notum við frekar \texttt{x}-ið skilgreint í 
+			\texttt{int x = 2} þar sem það er sterk skilgreining sem tekur 
+			forgang yfir hina skilgreininguna.
+		\item[b)] Hér er engin villa þar sem eina skilgreiningin á \texttt{y} 
+			í \texttt{b1.c} er \texttt{int y = 10} sem er sterk og við 
+			vísum í hana frá \texttt{b2.c} með \texttt{extern int y}. 
+			Þess vegna er engin tvískilgreining og allt er hreint og skýrt 
+			og virkar eins og við búumst við, \texttt{y} byrjar sem $10$ og 
+			prentast út, verður svo $12$ og prentast aftur út.
+	\end{itemize}
+\end{document}

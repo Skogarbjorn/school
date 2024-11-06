@@ -1,0 +1,15 @@
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/e.GeneratedMSBuildEditorConfig.editorconfig
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/e.AssemblyInfoInputs.cache
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/e.AssemblyInfo.cs
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/e.csproj.CoreCompileInputs.cache
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/e.sourcelink.json
+/home/ragnar/school/forritun/v2/e
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/e.dll
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/refint/e.dll
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/e.pdb
+/home/ragnar/school/forritun/v2/e.deps.json
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/e.genruntimeconfig.cache
+/home/ragnar/school/forritun/v2/e.runtimeconfig.json
+/home/ragnar/school/forritun/v2/e.dll
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/ref/e.dll
+/home/ragnar/school/forritun/v2/e.pdb

@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Gagnasafnsfræði Verkefni 9}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\begin{verbatim}
+CREATE TABLE Stars
+    (
+    name VARCHAR(50),
+    address VARCHAR(255),
+    PRIMARY KEY(name)
+    );
+
+CREATE TABLE Studios
+    (
+    name VARCHAR(50),
+    address VARCHAR(255),
+    PRIMARY KEY(name)
+    );
+
+CREATE TABLE Movies
+    (
+    title VARCHAR(100),
+    year INTEGER,
+    length INTEGER,
+    genre VARCHAR(50),
+    name VARCHAR(50),
+    PRIMARY KEY(title,year),
+    FOREIGN KEY(name) REFERENCES Studios(name)
+    );
+
+CREATE TABLE StarsIn
+    (
+    name VARCHAR(50),
+    title VARCHAR(100),
+    year INTEGER,
+    PRIMARY KEY(name,title,year),
+    FOREIGN KEY(name) REFERENCES Stars(name),
+    FOREIGN KEY(title,year) REFERENCES Movies(title,year)
+    );
+\end{verbatim}
+\newpage
+\section{}
+\begin{verbatim}
+CREATE TABLE Crews
+    (
+    number VARCHAR(25),
+    crewChief VARCHAR(50),
+    studioName VARCHAR(50),
+    PRIMARY KEY(studioName,number),
+    FOREIGN KEY(studioName) REFERENCES Studios(name)
+    );
+
+CREATE TABLE Studios
+    ( 
+    name VARCHAR(50),
+    addr VARCHAR(255),
+    PRIMARY KEY(name)
+    );
+\end{verbatim}
+\newpage
+\section{}
+\begin{verbatim}
+CREATE TABLE Customers
+    (
+    SSno CHAR(9),
+    name VARCHAR(100),
+    addr VARCHAR(255),
+    phone VARCHAR(8),
+    PRIMARY KEY(SSno)
+    );
+
+CREATE TABLE Flights
+    (
+    number VARCHAR(10),
+    day DATE,
+    aircraft VARCHAR(50),
+    PRIMARY KEY(number,day)
+    );
+
+CREATE TABLE Bookings
+    (
+    row VARCHAR(3),
+    seat VARCHAR(3),
+    SSno CHAR(9),
+    number VARCHAR(10),
+    day DATE,
+    PRIMARY KEY(SSno,number,day),
+    FOREIGN KEY(SSno) REFERENCES Customers(SSno),
+    FOREIGN KEY(number,day) REFERENCES Flights(number,day)
+    );
+    \end{verbatim}
+\end{document}

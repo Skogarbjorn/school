@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Formal Languages and Computability 8}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\begin{itemize}
+		\item[a)] We see that putting $1011$ into the DFA leads us into 
+			the reject state $q_r$ so the string is not in the language 
+			that $M$ describes.
+		\item[b)] Here, since the string $1011$ is not a string accepted by 
+			$M$, $\langle M,1011\rangle$ is not in $A_{DFA}$, since $A_{DFA}$ 
+			requires that $M$ accepts the string.
+		\item[c)] Here we see that $1010$ is accepted by $M$ so 
+			$\langle M,1010\rangle \in A_{DFA}$.
+		\item[d)] This is not true since $EQ_{DFA}$ requires two DFA's, 
+			$\langle M,N\rangle$ and so with only $\langle M\rangle$ we 
+			cannot compare two DFA's since only one is given.
+	\end{itemize}
+
+	\section{}
+	To prove that $D$ is countable, we can make do with the fact that since 
+	$\mathbb{N}$ is countable, we only need to show that there exists an 
+	injection $D\rightarrow \mathbb{N}$ since if that is the case, the 
+	the cardinality of $D$, $|D| \leq |\mathbb{N}|$, meaning that since 
+	$\mathbb{N}$ is countable, $D$ also has to be countable.
+
+	We then let $f: \mathbb{N}\times\mathbb{N}\times\mathbb{N}\rightarrow\mathbb{N}$ be defined 
+	as $f(n,m,o) = 2^n\cdot3^m\cdot5^o$, $n,m,o\in\mathbb{N}$. To prove that it is injective, we 
+	assume that for some $a,b,c,m,n,o\in\mathbb{N}$,
+	\[
+		f(a,b,c) = f(n,m,o)
+	\]
+	\[
+		\iff 2^a\cdot3^b\cdot5^c = 2^n\cdot3^m\cdot5^o
+	\]
+    which clearly shows that $a=n$, $b=m$, $c=o$. Therefore, $f: D\rightarrow\mathbb{N}$ is injective so $D$ is countable.
+
+	\section{}
+	\begin{itemize}
+		\item[a)] Since we are working with a set of binary strings, the 
+			set $A$ is countably infinite as $A$ is a subset of the set 
+			of all possible binary strings, according to the Note on 
+			Lemma 53 in lecture 8. If we would be working with binary 
+			sequences however, the set $A$ would be uncountable.
+		\item[b)] Since $w = 1.010101010\dots$ is an infinite binary 
+			sequence, it is not in $A$ since $A$ only accepts finite binary 
+			strings.
+		\item[c)] $A$ is decidable since for any string $w$ which is 
+			finite according to our definition in a), we can calculate 
+			$\sqrt{8}$ to the precision of $w$ and then compare them, 
+			all in finite time, then reject if $w>\sqrt{8}$ and accept 
+			otherwise.
+	\end{itemize}
+
+	\section{}
+    Here we will construct a new DFA, $C$, that accepts only strings that are 
+	accepted by S and not by R. We then see that if $L(S)\subseteq L(R)$ 
+	then $L(C) = \varnothing$. 
+
+	Lets assume a TM $F = F(\langle R,S\rangle)$ which constructs a DFA $C$ 
+	as we described. Then we can run a TM $T$ that decides on $E_{DFA}$ on 
+	$C$. If $T$ accepts, $F$ accepts, if not, it rejects.
+
+	TM $F$ then accepts if $L(C) = \varnothing$ and rejects otherwise so it 
+	decides on the language $A$.
+\end{document}

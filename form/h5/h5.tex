@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+
+% Math
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+% Graphics
+
+\usepackage{graphicx}
+\usepackage{tikz}
+% Code environment
+\usepackage{minted}
+%\usepackage{bm}
+%\usepackage{siunitx}
+%\usepackage{animate}
+%\usepackage{hyperref}
+%\usepackage{movie15}
+%\usepackage{multicol}
+%\usepackage{changepage}
+\title{Formal Languages and Computability 5}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+
+\begin{document}
+\renewcommand\thepage{}
+	
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{The DFA depicted below determines whether the remainder after 
+		dividing a \textit{binary number} by three is one. Convert it to 
+		a corresponding context-free grammar.}
+
+		We will use the algorithm described in lecure 5.
+
+		There are three states so we will get variables $R_0$, $R_1$ and 
+		$R_2$. Then we get the rules
+
+		$R_0 \rightarrow 0R_0 \hspace{.5em} | \hspace{.5em} 1R_1$ \\
+		$R_1 \rightarrow 1R_0 \hspace{.5em} | \hspace{.5em} 0R_2 \hspace{.5em} | \hspace{.5em} \epsilon$ \\
+		$R_2 \rightarrow 1R_2 \hspace{.5em} | \hspace{.5em} 0R_1$
+
+		Where the start variable is $R_0$.
+
+	\section{Convert the following CFG into an equivalent CFG in Chomsky 
+		normal form, using the procedure given in Theorem 2.9}
+
+		We start with
+
+		\[A\rightarrow BAB\mid B\mid\epsilon\]
+		\[B\rightarrow 00\mid\epsilon\]
+
+		And then we first add a start state $S_0$ and rule $S_0\rightarrow 
+		A$. Then we remove all $\epsilon$-rules by adding a case to all 
+		rules which contain the nullable variable on the right hand side 
+		where the nullable variable does not occur.
+
+		We start with $B$ and get
+
+		\[S_0\rightarrow A\]
+		\[A\rightarrow BAB\mid BA\mid AB\mid B\mid \epsilon\]
+		\[B\rightarrow 00\]
+
+		And then do $A$ as well:
+
+		\[S_0\rightarrow A\mid \epsilon\]
+		\[A\rightarrow BAB\mid BA\mid AB\mid B\]
+		\[B\rightarrow 00\]
+
+		We then get rid of unit rules:
+
+		\[S_0\rightarrow BAB\mid BA\mid AB\mid 00\mid \epsilon\]
+		\[A\rightarrow BAB\mid BA\mid AB\mid 00\]
+		\[B\rightarrow 00\]
+
+		We then remove the long rules:
+
+		\[S_0\rightarrow BA_1\mid BA\mid AB\mid 00\mid \epsilon\]
+		\[A\rightarrow BA_1\mid BA\mid AB\mid 00\]
+		\[B\rightarrow 00\]
+		\[A_1\rightarrow AB\]
+
+		And then at last we remove the excess terminal symbols with
+
+		\[S_0\rightarrow BA_1\mid BA\mid AB\mid U_1U_1\mid \epsilon\]
+		\[A\rightarrow BA_1\mid BA\mid AB\mid U_1U_1\]
+		\[B\rightarrow U_1U_1\]
+		\[A_1\rightarrow AB\]
+		\[U_1\rightarrow 0\]
+
+		And now we are done. As we can see, the CFG is in Chomsky normal 
+		form as all rules are of the form $A\rightarrow BC$ or 
+		$A\rightarrow a$ or $S\rightarrow\epsilon$.
+
+		\section{}
+
+		\begin{itemize}
+			\item[a)] We can give the CFG with the start state $S$:
+
+					\[S\rightarrow 0BA0\]
+					\[A\rightarrow 0A0\mid \geq\]
+					\[B\rightarrow 0B\mid \epsilon\]
+			\item[b)] We define the start state to be $S$ again:
+
+				\[S\rightarrow 0A0\]
+				\[A\rightarrow B0C0\mid 0A0\]
+				\[B\rightarrow 0B\mid B0\mid +\]
+				\[C\rightarrow 0C0\mid \geq\]
+			\item[c)] If $i_A = i_B$ and so forth, then $A\cup B$ is not 
+				CF since then it would be impossible to ensure that in 
+				both $A$ and $B$ there are the same amount of $0$'s in one 
+				place and not in some other, but if $i_A$ is unrelated to 
+				$i_B$ and so on, the language $C= A\cup B$ is indeed CF 
+				since we can just add the start state $S_0$ and rule 
+				$S_0 \rightarrow S_AS_B$ where $S_A$ is the start state for 
+				$A$ and $S_B$ is the start state for $B$. 
+		\end{itemize}
+
+\end{document}

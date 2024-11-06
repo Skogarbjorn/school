@@ -1,0 +1,21 @@
+;;; Höfundur: Snorri Agnarsson, 2017-2023
+
+val driver = sqlGetDriver("sqlite-jdbc-3.43.0.0.jar","org.sqlite.JDBC");
+
+val conn = sqlGetConnectionFromDriver(driver,"jdbc:sqlite:company.db");
+
+write("Enter a Social Security Number: ");
+val ssn = readLine();
+
+val qstring = "select Lname, Salary from EMPLOYEE where ssn = ?";
+val preparedQuery = sqlPrepareStatement(conn,qstring);
+
+sqlForAll(var name, var salary)
+fromPreparedQuery(preparedQuery,[ssn])
+do
+{
+	writeln(name++" "++salary);
+};
+
+sqlClose(preparedQuery);
+sqlClose(conn);

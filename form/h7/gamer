@@ -1,0 +1,5 @@
+could start by removing 0s
+then creating # and on left side create binary number always incremented by 1
+on the left side of that create middle number ^2 and compare that and 
+input string, if not equal then increment middle number and repeat, 
+if left is longer than right then stop and reject.

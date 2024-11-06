@@ -1,0 +1,115 @@
+name:   2xybin
+init:   c0
+accept: qa
+
+//Checks for compatibility for autograder
+c0,0
+c1,0,>
+c0,1
+c1,1,>
+
+c1,0
+c1,0,>
+c1,1
+c1,1,>
+c1,#
+c2,#,>
+
+c2,0
+r1,0,<
+c2,1
+r1,1,<
+
+// Initialization for left side
+i0,0
+i0,X,>
+i0,1
+i1,1,>
+i0,#
+i4,#,>
+
+//Move to right side
+i1,0
+i1,0,>
+i1,1
+i1,1,>
+i1,#
+i2,#,>
+
+//Initialization for right side
+i2,0
+i2,Y,>
+i2,1
+r0,1,<
+
+//Zero string
+i4,0
+i4,Y,>
+i4,_
+qa,_,-
+
+//Take new value
+q0,0
+m0,X,>
+q0,1
+m1,X,>
+q0,#
+s2,#,>
+
+//Move with goal of 0
+m0,1
+m0,1,>
+m0,0
+m0,0,>
+m0,#
+s0,#,>
+//Move with goal of 1
+m1,1
+m1,1,>
+m1,0
+m1,0,>
+m1,#
+s1,#,>
+
+//Search with goal of 0
+s0,Y
+s0,Y,>
+s0,0
+r0,Y,<
+//Search with goal of 1
+s1,Y
+s1,Y,>
+s1,1
+r0,Y,<
+//Search with goal of final 0
+s2,Y
+s2,Y,>
+s2,0
+s3,Y,>
+//Check if there is more than final 0
+s3,_
+qa,_,-
+
+//Return to get new number
+r0,Y
+r0,Y,<
+r0,#
+r0,#,<
+r0,0
+r0,0,<
+r0,1
+r0,1,<
+r0,X
+q0,X,>
+r0,_
+q0,_,>
+
+//Return to initialize
+r1,#
+r1,#,<
+r1,0
+r1,0,<
+r1,1
+r1,1,<
+r1,_
+i0,_,>

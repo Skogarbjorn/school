@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Tölvugrafík Heimadæmi 5}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\url{https://skogarbjorn.github.io/h5/1/hus.html}
+	\section{}
+	\url{https://skogarbjorn.github.io/h5/2/run.html}
+
+	\section{}
+    \begin{itemize}
+    	\item[a)] Við sjáum að þar sem dreifendurskin er bjartast þar sem 
+			ljós skín beint á yfirborð, svo bjartasta dreifendurskinið á 
+			þessari mynd er í punkti $C$. Svo er bjartasta depilendurskinið 
+			örugglega rúmlega í botni dalsins, þar sem endurskinsvigurinn 
+			er næstum jafn sjónvigrinum.
+    	\item[b)] Fyrir alla punktana er sama umhverfisendurskin þar sem 
+			styrkleiki ljóssins helst eins og endurkastsstuðullinn $k$ er 
+			sá sami fyrir allt yfirborðið.
+
+			Fyrir $A$ er dreifendurskinið mjög sterkt þar sem þvervigurinn 
+			er næstum jafn ljósvigrinum, en depilendurskinið er því sem næst 
+			ekkert þar sem hornið milli sjónvigurs og endurskinsvigurs er 
+			rúmlega $90$ gráður.
+
+			Fyrir $B$ er dreifendurskinið ekkert 
+			þar sem hornið milli þvervigursins og ljósvigursins er stærra en 
+			$90$ gráður, og depilendurskinið verður einnig ekkert þar sem 
+			ef ljósvigur bendir á bak við yfirborð bendir endurskinsvigurinn 
+			til baka á ljósið, svo hornið milli hans og sjónvigurs verður 
+			$90$ gráður sem núllar út gildið. 
+
+			Fyrir $C$ er rosalega sterkt 
+			dreifendurskin eins og útskýrt var í a), en depilendurskinið 
+			frekar dauft þar sem hornið milli sjónvigurs og endurskinsvigurs 
+			er svolítið stórt en þó ekki $90$ gráður.
+    \end{itemize}
+
+	\section{}
+	\begin{itemize}
+		\item[a)] Þetta er satt, eins og sést í formúlu fyrir dreifendurskin 
+			er aldrei hugsað um staðsetningu áhorfanda, 
+			\begin{equation}
+				I_d = k_d(l\cdot n)L_d
+				\label{eq:diffuse}
+			\end{equation}
+		\item[b)] Þetta er ósatt, umhverfisendurskin er einungis notað til 
+			að nálga óbeina lýsingu vegna endurkasts, ekki fyrir nálgun 
+			annarra ljósgjafa.
+		\item[c)] Þetta er ósatt þar sem dofnunargildi fer bara eftir lengd 
+			ljósgjafa frá yfirborði, ekki tengt áhorfanda.
+		\item[d)] Þetta er einnig ósatt, litur umhverfisendurskins ætti að 
+			fara eftir lit yfirborðs en litur depilendurskins ætti að vera 
+			sami og litur ljósgjafa.
+	\end{itemize}
+\end{document}

@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+
+% Math
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+% Graphics
+
+\usepackage{graphicx}
+\usepackage{tikz}
+% Code environment
+\usepackage{minted}
+%\usepackage{bm}
+%\usepackage{siunitx}
+%\usepackage{animate}
+%\usepackage{hyperref}
+%\usepackage{movie15}
+%\usepackage{multicol}
+%\usepackage{changepage}
+\title{Gagnasafnsfræði Verkefni 4}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+  \rule[-.02ex]{.25em}{.5pt}\llap{\rule[\ht0]{.25em}{.5pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
+\begin{document}
+\renewcommand\thepage{}
+	
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	Látum $\omega$ tákna NULL gildi.
+
+	Einnig má minnast á að í SQLITE þá er röð eiginda x,y,z,w,t en samkvæmt 
+	formúlunni frá wikipedia:
+	\begin{equation}
+	U = \Pi_{r_1,...,r_n,c_1,...,c_m,s_1,...,s_k}(P)
+	\end{equation}
+	fæst að röð þeirra eigi að vera x,z,y,w,t. Ég vel 
+	hér að nota röðun SQLITE.
+
+
+	\section{$R\bowtie S$}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		X & Y & Z & W & T \\
+		\hline
+		15 & c & 8 & 10 & 6 \\
+		15 & c & 8 & 10 & 5 \\
+		\hline
+	\end{tabular}
+	\end{center}
+	
+	\section{$R\leftouterjoin S$}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		X & Y & Z & W & T \\
+		\hline
+		10 & b & 5 & $\omega$ & $\omega$ \\
+		15 & c & 8 & 10 & 6 \\
+		15 & c & 8 & 10 & 5 \\
+		25 & b & 6 & $\omega$ & $\omega$ \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\section{$R\rightouterjoin S$}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		X & Y & Z & W & T \\
+		\hline
+		15 & c & 8 & 10 & 6 \\
+		15 & c & 8 & 10 & 5 \\
+		$\omega$ & d & $\omega$ & 25 & 3 \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\section{$R\fullouterjoin S$}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		X & Y & Z & W & T \\
+		\hline
+		10 & b & 5 & $\omega$ & $\omega$ \\
+		15 & c & 8 & 10 & 6 \\
+		15 & c & 8 & 10 & 5 \\
+		25 & b & 6 & $\omega$ & $\omega$ \\
+		$\omega$ & d & $ \omega$ & 25 & 3 \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\section{$R\bowtie_{R.Y=S.Y\land Z=W}S$}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		X & Z & Y & W & T \\
+		\hline
+	\end{tabular}
+	\end{center}
+
+\end{document}

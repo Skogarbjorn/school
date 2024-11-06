@@ -1,0 +1,68 @@
+;; Notkun: (((h1) x) y)
+;; Fyrir: x og y eru tölur
+;; Gildi: (x + y) / y
+(define (h1)
+  (lambda (x) (lambda (y) (/ (+ x y) y)))
+)
+(((h1) 6) 4)
+;; Gefum 6 og 4 sem gildi og það einfaldast í
+;; (lambda (y) (/ (+ 6 y) y))
+;; sem verður (/ (+ 6 4) 4)
+;; og síðan (/ 10 4)
+;; sem gefur 2 1/2
+
+;; Notkun: (h2)
+;; Fyrir: ekkert inntak
+;; Gildi: (3 + 6) / 6
+(define (h2)
+  (((lambda (x) (lambda (y) (/ (+ x y) y))) 3) 6)
+  )
+(h2)
+;; einfaldast í
+;; ((lambda (y) (/ (+ 3 y) y)) 6)
+;; og svo (/ (+ 3 6) 6)
+;; sem verður (/ 9 6)
+;; og gefur 1 1/2
+
+;; Notkun: (h3)
+;; Fyrir: ekkert inntak
+;; Gildi: (3^2)^2
+(define (h3)
+  (((lambda (x) (lambda (y) (x (x y)))) (lambda (x) (* x x))) 3)
+  )
+(h3)
+;; Fallið fer inn fyrir x og fæst
+;; ((lambda (y) ((lambda (x) (* x x)) ((lambda (x) (* x x)) y))) 3)
+;; og síðan ((lambda (x) (* x x)) ((lambda (x) (* x x)) 3))
+;; svo ((lambda (x) (* x x)) 9)
+;; sem gefur (* 9 9)
+;; og gildið er 81
+
+;; Notkun: ((e1 z) x)
+;; Fyrir: z og x eru tölur
+;; Gildi: (x + z)/z
+(define (e1 z)
+  (lambda (x) (/ (+ x z) z))
+)
+((e1 2) 4)
+;; Hér er z frjáls breyta og fallið styttist í
+;; (/ (+ x 2) 2))
+;; og svo (/ (+ 4 2) 2)
+;; sem verður (/ 6 2)
+;; sem gefur 3
+
+
+;; Notkun: ((((e2) f) g) x)
+;; Fyrir: f og g eru lambda föll, x tala
+;; Gildi: f(g(g(x)))
+(define (e2)
+  (lambda (x) (lambda (y) (lambda (z) (x (y (y z))))))
+  )
+((((e2) (lambda (a) (* a a))) (lambda (b) (+ b b))) 3)
+;; Sem verður (lambda (y) (lambda (z) ((lambda (a) (* a a)) (y (y z))))
+;; og svo (lambda (z) ((lambda (a) (* a a)) ((lambda (b) (+ b b)) ((lambda (b) (+ b b)) z))))
+;; loks ((lambda (a) (* a a)) ((lambda (b) (+ b b)) ((lambda (b) (+ b b)) 3)))
+;; svo einfaldast ((lambda (a) (* a a)) ((lambda (b) (+ b b)) 6))
+;; síðan ((lambda (a) (* a a)) 12)
+;; og svo (* 12 12)
+;; sem er 144

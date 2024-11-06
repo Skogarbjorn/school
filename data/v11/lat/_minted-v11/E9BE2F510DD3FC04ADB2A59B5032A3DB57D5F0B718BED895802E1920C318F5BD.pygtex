@@ -1,0 +1,87 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.sql.Connection}\PYG{p}{;}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.sql.DriverManager}\PYG{p}{;}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.sql.ResultSet}\PYG{p}{;}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.sql.ResultSetMetaData}\PYG{p}{;}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.sql.SQLException}\PYG{p}{;}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.sql.Statement}\PYG{p}{;}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.sql.PreparedStatement}\PYG{p}{;}
+
+\PYG{k+kd}{public}\PYG{+w}{ }\PYG{k+kd}{class} \PYG{n+nc}{V11}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kd}{public}\PYG{+w}{ }\PYG{k+kd}{static}\PYG{+w}{ }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{+w}{ }\PYG{n}{String}\PYG{o}{[]}\PYG{+w}{ }\PYG{n}{args}\PYG{+w}{ }\PYG{p}{)}
+\PYG{+w}{        }\PYG{k+kd}{throws}\PYG{+w}{ }\PYG{n}{Exception}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{Class}\PYG{p}{.}\PYG{n+na}{forName}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}org.sqlite.JDBC\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{        }\PYG{k+kt}{boolean}\PYG{+w}{ }\PYG{n}{USE\PYGZus{}AUTOCOMMIT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{args}\PYG{o}{[}\PYG{l+m+mi}{0}\PYG{o}{]}\PYG{p}{.}\PYG{n+na}{equals}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}autocommit\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{        }\PYG{k+kt}{boolean}\PYG{+w}{ }\PYG{n}{USE\PYGZus{}INDEX}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{args}\PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{]}\PYG{p}{.}\PYG{n+na}{equals}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}index\PYGZdq{}}\PYG{p}{);}
+
+\PYG{+w}{        }\PYG{n}{Connection}\PYG{+w}{ }\PYG{n}{conn}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k+kc}{null}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{try}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{conn}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{DriverManager}\PYG{p}{.}\PYG{n+na}{getConnection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}jdbc:sqlite:v11.db\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{conn}\PYG{p}{.}\PYG{n+na}{setAutoCommit}\PYG{p}{(}\PYG{n}{USE\PYGZus{}AUTOCOMMIT}\PYG{p}{);}
+
+\PYG{+w}{			}\PYG{n}{Statement}\PYG{+w}{ }\PYG{n}{stmt}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{conn}\PYG{p}{.}\PYG{n+na}{createStatement}\PYG{p}{();}
+\PYG{+w}{			}\PYG{n}{stmt}\PYG{p}{.}\PYG{n+na}{executeUpdate}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}DROP TABLE IF EXISTS R\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{			}\PYG{n}{stmt}\PYG{p}{.}\PYG{n+na}{executeUpdate}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}DROP INDEX IF EXISTS RINDEX\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{			}\PYG{n}{stmt}\PYG{p}{.}\PYG{n+na}{executeUpdate}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}CREATE TABLE R( key INTEGER PRIMARY KEY, value DOUBLE)\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{			}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{USE\PYGZus{}INDEX}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{n}{stmt}\PYG{p}{.}\PYG{n+na}{executeUpdate}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}CREATE INDEX RINDEX ON R(value)\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{			}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{			}\PYG{n}{PreparedStatement}\PYG{+w}{ }\PYG{n}{pstmt}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{conn}\PYG{p}{.}\PYG{n+na}{prepareStatement}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}INSERT INTO R VALUES(?,?)\PYGZdq{}}\PYG{p}{);}
+
+\PYG{+w}{            }\PYG{k+kt}{long}\PYG{+w}{ }\PYG{n}{start}\PYG{p}{,}\PYG{n}{end}\PYG{p}{;}
+
+\PYG{+w}{            }\PYG{n}{start}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{nanoTime}\PYG{p}{();}
+\PYG{+w}{            }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}
+\PYG{+w}{            }\PYG{k}{for}\PYG{p}{(}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{!=}\PYG{l+m+mi}{1000000}\PYG{+w}{ }\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{++}\PYG{+w}{ }\PYG{p}{)}
+\PYG{+w}{            }\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{nanoTime}\PYG{p}{()}\PYG{o}{\PYGZhy{}}\PYG{n}{start}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mf}{6e+10}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{break}\PYG{p}{;}
+\PYG{+w}{				}\PYG{n}{pstmt}\PYG{p}{.}\PYG{n+na}{setInt}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{);}
+\PYG{+w}{				}\PYG{n}{pstmt}\PYG{p}{.}\PYG{n+na}{setDouble}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Math}\PYG{p}{.}\PYG{n+na}{random}\PYG{p}{()}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{);}
+\PYG{+w}{				}\PYG{n}{pstmt}\PYG{p}{.}\PYG{n+na}{executeUpdate}\PYG{p}{();}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{            }\PYG{k}{if}\PYG{p}{(}\PYG{+w}{ }\PYG{o}{!}\PYG{n}{USE\PYGZus{}AUTOCOMMIT}\PYG{+w}{ }\PYG{p}{)}\PYG{+w}{ }\PYG{n}{conn}\PYG{p}{.}\PYG{n+na}{commit}\PYG{p}{();}
+
+\PYG{+w}{            }\PYG{n}{end}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{nanoTime}\PYG{p}{();}
+\PYG{+w}{            }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{out}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Tími fyrir/Time for \PYGZdq{}}\PYG{o}{+}
+\PYG{+w}{                               }\PYG{n}{i}\PYG{o}{+}\PYG{l+s}{\PYGZdq{} innsetningar/inserts: \PYGZdq{}}\PYG{o}{+}
+\PYG{+w}{                               }\PYG{p}{(}\PYG{k+kt}{double}\PYG{p}{)(}\PYG{n}{end}\PYG{o}{\PYGZhy{}}\PYG{n}{start}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mf}{1e9}
+\PYG{+w}{                              }\PYG{p}{);}
+
+\PYG{+w}{            }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{out}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Tími per innsetningu/Time per insert: \PYGZdq{}}\PYG{o}{+}
+\PYG{+w}{                               }\PYG{p}{(}\PYG{k+kt}{double}\PYG{p}{)((}\PYG{n}{end}\PYG{o}{\PYGZhy{}}\PYG{n}{start}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mf}{1e9}\PYG{o}{/}\PYG{n}{i}\PYG{p}{)}
+\PYG{+w}{                              }\PYG{p}{);}
+
+\PYG{+w}{            }\PYG{n}{start}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{nanoTime}\PYG{p}{();}
+\PYG{+w}{            }\PYG{n}{ResultSet}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{o}{=}
+\PYG{+w}{                }\PYG{n}{stmt}\PYG{p}{.}\PYG{n+na}{executeQuery}
+\PYG{+w}{                    }\PYG{p}{(}\PYG{l+s}{\PYGZdq{}SELECT COUNT(*) FROM R WHERE \PYGZdq{}}\PYG{o}{+}
+\PYG{+w}{                     }\PYG{l+s}{\PYGZdq{}value BETWEEN 0.01 AND 0.10\PYGZdq{}}
+\PYG{+w}{                    }\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{r}\PYG{p}{.}\PYG{n+na}{next}\PYG{p}{();}
+\PYG{+w}{            }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{out}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Niðurstaða leitar/Result of search: \PYGZdq{}}\PYG{o}{+}\PYG{n}{r}\PYG{p}{.}\PYG{n+na}{getInt}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{));}
+\PYG{+w}{            }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{out}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Tími fyrir leit/Time for search: \PYGZdq{}}\PYG{o}{+}
+\PYG{+w}{                               }\PYG{p}{(}\PYG{k+kt}{double}\PYG{p}{)(}\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{nanoTime}\PYG{p}{()}\PYG{o}{\PYGZhy{}}\PYG{n}{start}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mf}{1e9}
+\PYG{+w}{                              }\PYG{p}{);}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{catch}\PYG{p}{(}\PYG{n}{SQLException}\PYG{+w}{ }\PYG{n}{e}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{err}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{n}{e}\PYG{p}{.}\PYG{n+na}{getMessage}\PYG{p}{());}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{finally}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{k}{try}
+\PYG{+w}{            }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{k}{if}\PYG{p}{(}\PYG{n}{conn}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{k+kc}{null}\PYG{p}{)}
+\PYG{+w}{                    }\PYG{n}{conn}\PYG{p}{.}\PYG{n+na}{close}\PYG{p}{();}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{            }\PYG{k}{catch}\PYG{p}{(}\PYG{n}{SQLException}\PYG{+w}{ }\PYG{n}{e}\PYG{p}{)}
+\PYG{+w}{            }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{err}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{n}{e}\PYG{p}{);}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

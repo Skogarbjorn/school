@@ -1,0 +1,10 @@
+(lambda (x) (lambda (y) (/ (+ x y) y)))
+
+((lambda (x) ((lambda (y) (/ (+ x y) y)) 3)) 6)
+
+((lambda (x) ((lambda (y) (x (x y))) 3)) (lambda (x) (* x x)))
+
+
+;; (lambda (/ (+ x z) z)) z er frjáls breyta
+
+(lambda (x) (lambda (y) (lambda (z) (x (y (y z))))))

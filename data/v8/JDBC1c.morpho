@@ -1,0 +1,21 @@
+;;; Höfundur: Snorri Agnarsson, 2022-2023
+
+val driver = sqlGetDriver("sqlite-jdbc-3.43.0.0.jar","org.sqlite.JDBC");
+val conn = sqlGetConnectionFromDriver(driver,"jdbc:sqlite:company.db");
+
+sqlForAll(var ssn, var name, var salary)
+fromQuery(conn,"SELECT ssn, Lname, Salary FROM EMPLOYEE")
+do
+{
+	writeln(format("%9s %-15s %11d",[ssn,name,salary]));
+};
+
+sqlForAll___fromQuery__do	( var ssn
+							, var name
+							, var salary
+							, conn
+							, "SELECT ssn, Lname, Salary FROM EMPLOYEE"
+							, @{writeln(format("%9s %-15s %11d",[ssn,name,salary]))}
+							);
+
+sqlClose(conn);

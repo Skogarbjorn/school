@@ -1,0 +1,12 @@
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/test.GeneratedMSBuildEditorConfig.editorconfig
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/test.AssemblyInfoInputs.cache
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/test.AssemblyInfo.cs
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/test.csproj.CoreCompileInputs.cache
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/test.sourcelink.json
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/test.dll
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/refint/test.dll
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/test.pdb
+/home/ragnar/school/forritun/v2/test.deps.json
+/home/ragnar/school/forritun/v2/test.dll
+/home/ragnar/school/forritun/v2/obj/Debug/net6.0/ref/test.dll
+/home/ragnar/school/forritun/v2/test.pdb

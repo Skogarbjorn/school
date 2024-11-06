@@ -1,0 +1,42 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.io.*}\PYG{p}{;}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{java.sql.*}\PYG{p}{;}
+
+\PYG{k+kd}{public}\PYG{+w}{ }\PYG{k+kd}{class} \PYG{n+nc}{V8c}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{	}\PYG{k+kd}{public}\PYG{+w}{ }\PYG{k+kd}{static}\PYG{+w}{ }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{n}{String}\PYG{+w}{ }\PYG{n}{args}\PYG{o}{[]}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kd}{throws}\PYG{+w}{ }\PYG{n}{SQLException}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{		}\PYG{n}{String}\PYG{+w}{ }\PYG{n}{url}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}jdbc:sqlite:/home/ragnar/school/data/v8/company.db\PYGZdq{}}\PYG{p}{;}
+\PYG{+w}{		}\PYG{n}{Connection}\PYG{+w}{ }\PYG{n}{conn}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k+kc}{null}\PYG{p}{;}
+
+\PYG{+w}{		}\PYG{k}{try}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{n}{conn}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{DriverManager}\PYG{p}{.}\PYG{n+na}{getConnection}\PYG{p}{(}\PYG{n}{url}\PYG{p}{);}
+\PYG{+w}{			}\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{out}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Connection established successfully\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{catch}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{SQLException}\PYG{+w}{ }\PYG{n}{e}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{n}{e}\PYG{p}{.}\PYG{n+na}{printStackTrace}\PYG{p}{();}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{finally}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{n}{Statement}\PYG{+w}{ }\PYG{n}{stmt}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{conn}\PYG{p}{.}\PYG{n+na}{createStatement}\PYG{p}{();}
+\PYG{+w}{			}\PYG{n}{ResultSet}\PYG{+w}{ }\PYG{n}{rs}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{stmt}\PYG{p}{.}\PYG{n+na}{executeQuery}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}SELECT Ssn,Salary FROM EMPLOYEE\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{			}\PYG{n}{PreparedStatement}\PYG{+w}{ }\PYG{n}{pstmt}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{conn}\PYG{p}{.}\PYG{n+na}{prepareStatement}\PYG{p}{(}
+\PYG{+w}{				}\PYG{l+s}{\PYGZdq{}UPDATE EMPLOYEE SET Salary = Salary + 100 WHERE Ssn = ?\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{			}\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{rs}\PYG{p}{.}\PYG{n+na}{next}\PYG{p}{())}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{n}{String}\PYG{+w}{ }\PYG{n}{ssn}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{rs}\PYG{p}{.}\PYG{n+na}{getString}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Ssn\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{				}\PYG{n}{pstmt}\PYG{p}{.}\PYG{n+na}{setString}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{ssn}\PYG{p}{);}
+\PYG{+w}{				}\PYG{n}{pstmt}\PYG{p}{.}\PYG{n+na}{executeUpdate}\PYG{p}{();}
+\PYG{+w}{			}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{			}\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{out}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Salary increased by 100\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{			}\PYG{n}{rs}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{stmt}\PYG{p}{.}\PYG{n+na}{executeQuery}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}SELECT Salary FROM EMPLOYEE\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{			}\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{rs}\PYG{p}{.}\PYG{n+na}{next}\PYG{p}{())}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{out}\PYG{p}{.}\PYG{n+na}{println}\PYG{p}{(}\PYG{n}{rs}\PYG{p}{.}\PYG{n+na}{getDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Salary\PYGZdq{}}\PYG{p}{));}
+\PYG{+w}{			}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{			}\PYG{n}{rs}\PYG{p}{.}\PYG{n+na}{close}\PYG{p}{();}
+\PYG{+w}{			}\PYG{k}{try}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{conn}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{k+kc}{null}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{					}\PYG{n}{conn}\PYG{p}{.}\PYG{n+na}{close}\PYG{p}{();}
+\PYG{+w}{				}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{			}\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{catch}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{SQLException}\PYG{+w}{ }\PYG{n}{ex}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{n}{ex}\PYG{p}{.}\PYG{n+na}{printStackTrace}\PYG{p}{();}
+\PYG{+w}{			}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{	}\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Notkun: hopverk1 x}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Fyrir:  x er listi [x1,x2,...,xN] af hvaða}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}         tagi sem er.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Gildi:  Listinn [[xN],...,[x2],[x1]]}
+\PYG{n+nf}{hopverk1}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{foldl}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{a}\PYG{+w}{ }\PYG{n}{b}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}\PYG{k+kt}{:}\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{n}{x}
+\end{Verbatim}

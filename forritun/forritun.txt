@@ -1,0 +1,16 @@
+a)  BNF: <R> ::= 'a' <R> 'c' | <B>
+  		 <B> ::= 'b' <B> | ''
+	EBNF: R = 'a', R, 'c' | {'b'};
+
+b)  BNF: <R> ::= <abpart> <cdpart>
+		 <abpart> ::= 'ab' <abpart> | ''
+		 <cdpart> ::= 'c' <cdpart> 'd' | ''
+	EBNF: {'ab'}, cdpart;
+		  cdpart = ['c', cdpart, 'd'];
+
+c)  BNF: imposible jdnoway omg
+    EBNF: held impsoter
+
+d)  BNF: <R> ::= 'a' <R> 'b' <cpart>
+		 <cpart> ::= 'c' <cpart> | ''
+	EBNF: R = 'a', R, 'b', {'c'};

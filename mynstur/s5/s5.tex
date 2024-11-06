@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Gamer}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\section{Reiknirit fer í tvöfalda lykkju, þá ytri með k frá 1 til n og þá innri með i frá 1 til k. Inni í lykkjunni eru framkvæmdar i aðgerðir. Hve margar aðgerðir framkvæmir reikniritið alls?}
+	Við setjum upp í summur:
+	\[
+		\sum_{k=1}^{n}\sum_{i=1}^k i
+	\]
+	Og notum summuformúluna
+	\begin{equation}
+		\sum_{k=1}^n k = \frac{n(n+1)}{2}
+		\label{eq:gamer1}
+	\end{equation}
+	Og þá reiknum við upp úr innri summunni fyrst og fáum
+	\[
+		\sum_{k=1}^{n}\sum_{i=1}^k i = \sum_{k=1}^n \frac{k(k+1)}{2}
+		= \frac{1}{2}\left(\sum_{k=1}^n k^2 + \sum_{k=1}^n k\right)
+	\]
+	Munum eftir summuformúlu fyrir $k^2$
+	\begin{equation}
+		\sum_{k=1}^n k^2 = \frac{n(n+1)(2n+1)}{6}
+		\label{eq:gamer2}
+	\end{equation}
+	Og svo notum við bæði (1) og (2) og fáum loks
+	\[
+		= \frac{1}{2}\left( \frac{n(n+1)(2n+1)}{6} + \frac{n(n+1)}{2}\right)
+		= \frac{n(n+1)(2n+1) + 3n(n+1)}{12}
+	\]
+	\[
+		= \frac{n(n+1)(2n+4)}{12} = \frac{n(n+1)(n+2)}{6} 
+	\]
+
+	\vspace{-1.5em}$\hfill\square$
+
+\end{document}

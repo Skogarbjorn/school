@@ -1,0 +1,162 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usepackage{fancyvrb}
+\usepackage{xlop}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+
+% Math
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+% Graphics
+
+\usepackage{graphicx}
+\usepackage{tikz}
+% Code environment
+\usepackage{minted}
+%\usepackage{bm}
+%\usepackage{siunitx}
+%\usepackage{animate}
+%\usepackage{hyperref}
+%\usepackage{movie15}
+%\usepackage{multicol}
+%\usepackage{changepage}
+\title{Tölvutækni og forritun Heimadæmi 6}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+
+\begin{document}
+\renewcommand\thepage{}
+	
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{Segjum að gistið $\%rax$ innihaldi $0x200$ og gistið $\%rcx$ 
+		innihaldi $0x5$. Í hverju tilviki reiknið út raunverulegt vistfang.}
+	\begin{itemize}
+		\item[a)] $\$0x18(\%rax)$ Fáum hér $0x18$ sem hliðrun fyrir gildi 
+			gistisins $\%rax$ sem er þá $0x18 + 0x200 = 0x218$
+		\item[b)] $(\%rax,\%rcx,8)$ Hér plúsum við saman gildi $\%rax$ og 
+			áttfalt gildi $\%rcx$, svo $0x200 + 8 * 0x5 = 0x200 + 0x28 = 
+			0x228$
+		\item[c)] $\$50(,\%rax,4)$ Hér er hliðrun um $50$ á fjórfalt gildi 
+			$\%rax$, svo $50 + 4 * 0x200 = 0x32 + 0x800 = 0x832$
+	\end{itemize}
+
+	\section{Hér eru gagnaflutningsskipanir fyrir mismunandi gagnastærðir. 
+		Það vantar hins vegar síðasta bókstafinn í skipanirnar eftir því 
+		hvaða gagnastærðir er verið að flytja. Skrifið skipanirnar aftur 
+		upp með réttum síðasta bókstaf í stað spurningamerkisins.}
+
+		\begin{itemize}
+			\item[] $movl \hspace{1em} (\%rbx, \%rax, 2), \%edx$
+			\item[] $movq \hspace{1em} \$2, \%rdi$
+			\item[] $movb \hspace{1em} \%ah, (\%rcx)$
+			\item[] $movw \hspace{1em} \%bx, \%dx$
+		\end{itemize}
+
+	\section{Hér fyrir neðan eru nokkrar einfaldar segðir. Sýnið ódýrar 
+	smalamálsskipanir til að reikna þær. Gerið ráð fyrir að breytan $x$ sé 
+	í gistinu $\%rax$, en þið megið nota önnur gisti ef þið þurfið.}
+
+	\begin{itemize}
+		\item[a)] $leaq \hspace{1em} (\%rax, \%rax, 4), \%rax$
+		\item[b)] $leaq \hspace{1em} (\%rax, \%rax, 8), \%rax$ \\
+				  $leaq \hspace{1em} (\%rax, \%rax, 2), \%rax$
+		\item[c)] $leaq \hspace{1em} (\%rax, \%rax, 8), \%rax$ \\
+				  $leaq \hspace{1em} (\%rax, \%rax, 4), \%rax$
+		\item[d)] $leaq \hspace{1em} (\%rax, \%rax), \%rdx$ \\
+				  $leaq \hspace{1em} (\%rax, \%rdx, 5), \%rax$
+	\end{itemize}
+
+	\section{Hér fyrir neðan er smalamálsútgáfa af fallinu \\ $long 
+		\hspace{0.3em} reikn(long \hspace{0.3em}x, \hspace{0.3em}long 
+	 \hspace{0.3em}y)$ sem reiknar einfalda segð frá viðföngunum $x$ og $y$. 
+ Athugið að viðfangið $x$ kemur í gistið $\%rdi$, viðfangið $y$ kemur í 
+$\%rsi$ og skilagildi fallsins fer í gistið $\%rax$.}
+
+	\begin{itemize}
+		\item[a)] Hér er útskýring \vspace{1em} \\ $\hspace{2em} reikn:$ \\
+			$\text{Hér erum við að margfalda y með 5 og setja það í gistið 
+			\%rax}$ \\
+	$- \hspace{2em} leaq \hspace{2em} (\%rsi,\%rsi,4),\hspace{1em}\%rax$ \\
+			$\text{Hér tökum við 5y og bætum við það x margfaldað með 
+			tveimur, og setjum þá 5y + 2x í \%rdx}$ \\
+	$- \hspace{2em} leaq \hspace{2em} (\%rax,\%rdi,2),\hspace{1em}\%rdx$ \\
+			$\text{Tökum svo 5y + 2x og margföldum það með 8 og setjum í 
+			skilagildið \%rax}$ \\
+	$- \hspace{2em} leaq \hspace{2em} 0(,\%rdx,8),\hspace{1em}\%rax$ \\
+			$\text{Drögum svo 5y + 2x einu sinni frá skilagildinu til að 
+			fá loks 7(5y + 2x)}$ \\
+	$- \hspace{2em} subq \hspace{2em} \%rdx,\hspace{1em}\%rax$ \\
+			$\text{Skilum svo 7(5y + 2x)}$ \\
+	$- \hspace{2em} ret$
+		\item[b)] 
+			\begin{verbatim}
+long reikn(long x, long y) {
+    return 7*(5*x + 2*y);
+}
+			\end{verbatim}
+	\end{itemize}
+
+	\section{Þið fáið gefna Linux keyrsluskránna $haha$. Hún hefur 
+		$main$-fall sem tekur inn eina heiltölu á skipanalínunni, kallar á 
+		fallið $hvad$ og prentar út skilagildi þess. Í þessu dæmi eigið þið 
+		að endurskrifa fallið í C kóða og útskýra í orðum hvað það gerir.}
+
+		Við sjáum að assembly kóðinn fyrir fallið lítur svona út:
+		\begin{verbatim}
+0000000000001169 <hvad>:
+    1169:	f3 0f 1e fa          	endbr64
+    116d:	8d 04 3f             	lea    (%rdi,%rdi,1),%eax
+    1170:	21 f8                	and    %edi,%eax
+    1172:	c1 e7 02             	shl    $0x2,%edi
+    1175:	21 f8                	and    %edi,%eax
+    1177:	c3                   	ret
+		\end{verbatim}
+		
+		Þar sem inntaksgildi fallsins n er í \%edi er \%rdi bara 64-bita 
+		útgáfa af því svo við fyrst tvöföldum n og setjum í \%eax. Síðan 
+		bitwise AND-um við þá n og 2n og geymum niðurstöðuna í \%eax.
+
+		Svo bit shiftum við n um 2 til vinstri og geymum í \%edi, og loks 
+		bitwise AND-um við \%edi, semsagt n<<2, við \%eax, semsagt n \& 2n.
+
+		Svo skilum við því gildi, þ.e. \%eax.
+
+		Þá getum við skrifað C kóðann
+
+		\begin{verbatim}
+int hvad(unsigned int n) {
+    return n & 2*n & n<<2;
+}
+		\end{verbatim}
+
+		Þar sem við fyrst AND-um saman n og 2n, og svo niðurstöðuna úr því 
+		við n shiftað um 2 til vinstri. Fallið virkar þá þannig að það fær 
+		inn tölu og skilar bitastreng sem inniheldur ás allstaðar þar sem 
+		þrír ásar koma fram í inntakinu í röð til hægri.
+
+
+\end{document}

@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.4in, right=1.4in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{gamer}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\section{}
+	\section{}
+	\section{Endurtakið reikningana í 3a, d og e fyrir n = 77 og e = 7}
+	\begin{itemize}
+		\item[a)] Upplýsingar í opinberum lykli eru $(n,e)$ en í 
+			einkalykli eru $(n,d)$ (eða $(p,q)$, bæði virkar)
+
+			Fáum skv. lýsingu að $n=77$ og $e=7$, svo við reiknum út $p$ og 
+			$q$:
+			\[
+				n = 77 = 7\cdot 11
+			\]
+			Svo við segjum að $p=11$ og $q=7$, og reiknum $d$:
+			\begin{equation}
+				d \equiv e^{-1}\text{ mod } (p-1)(q-1)
+				\label{eq:gamer1}
+			\end{equation}
+			Og við leysum þá andhverfuna:
+			\[de \equiv 1\text{ mod } 10\cdot6\]
+			\[\iff 7d\equiv 1\text{ mod }60\]
+			Sjáum að fyrir $d=43$ fæst $7\cdot43 = 301$ sem gefur $1$ 
+			mátað við $60$, svo við margföldum í gegn með $43$ og fáum
+			\[43\cdot 7\cdot d \equiv 43\cdot1\text{ mod } 60\]
+			\[\iff d \equiv 43\text{ mod }60\]
+			Svo við segjum að $d = 43$ og opinberi lykillinn er þá 
+			$(77,7)$ og einkalykillinn er $(77,43)$.
+		\item[d)] Við dulkóðum skilaboð $m$ skv.
+			\begin{equation}
+				c \equiv m^e\text{ mod }n
+				\label{eq:gamer2}
+			\end{equation}
+			Svo við fáum að dulkóðuðu skilaboðin $c$ eru
+			\[c \equiv 3^7\text{ mod }77\]
+			\[\iff c\equiv 2187\text{ mod }77\]
+			\[\iff c\equiv 31\text{ mod }77\]
+			Svo $c = 31$.
+		\item[e)] Til að afkóða skilaboð þarf að nota formúluna
+			\begin{equation}
+				m \equiv c^d\text{ mod }n
+				\label{eq:gamer3}
+			\end{equation}
+			Svo við stingum inn gildunum og fáum
+			\[m\equiv 31^{43}\text{ mod }77\]
+			\[\iff m\equiv 31\cdot(37^{21})\text{ mod }77\]
+			Og höldum áfram svona og loks fæst
+			\[m\equiv 3\text{ mod }77\]
+			Svo $m=3$.
+	\end{itemize}
+\end{document}

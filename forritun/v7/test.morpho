@@ -1,0 +1,97 @@
+"test.mexe" = main in
+{{
+main = fun()
+	{
+		;;;Notkun: mapreduce(f, op, u, x)
+		;;;Fyrir: f er fall, op er tvíundaraðgerð,
+		;;;       u er gildi og x er listi, [x1,x2,..,xn]
+		;;;Gildi: u op f(x1) op ... op f(xn) þar sem u op f(x1)
+		;;;       þýðir op(u, f(x1))
+		rec fun mapreduce(f, op, u, x)
+		{
+			var result = u;
+			while (x != [])
+			{
+				result = op(result, f(head(x)));
+				x = tail(x);
+			};
+			return result;
+		};
+		;;;Notkun: fromTo(i, j)
+		;;;Fyrir: i og j eru heiltölur, i<=j
+		;;;Gildi: Listinn [i,i+1,...,j-1]
+		rec fun fromTo(i, j)
+		{
+			if (i == j)
+			{
+				return [];
+			};
+			return i : fromTo(i+1, j);
+		};
+		;;;Notkun: insertAt(x, i, z)
+		;;;Fyrir: x=[x1,x2,...,xN] er listi gilda.
+		;;;       z er gildi, i er heiltala, 0 <= i <= N
+		;;;Gildi: Listinn [x1,x2,...,x_i,z,x_(i+1),...,xN]
+		rec fun insertAt(x, i, z)
+		{
+			if (i==0)
+			{
+				return z : insertAt(x, i-1, z);
+			};
+			if (x==[])
+			{
+				return [];
+			};
+			return head(x) : insertAt(tail(x), i-1, z);
+		};
+		;;;Notkun: extendPermutation(n, z)
+		;;;Fyrir:  n >= 1 er heiltala.
+		;;;        z er einhver umröðun listans [1,2,...,n-1].
+		;;;Gildi:  Listi allra þeirra lista sem út koma þegar
+		;;;        tölunni n er skeytt inn í listann z á
+		;;;        einhverjum stað, allt frá byrjun til enda.
+		rec fun extendPermutation(n, z)
+		{
+			if (z==[])
+			{
+				return [[n]];
+			};
+			return (n : z) : (map((fun(l){head(z) : l}),
+				extendPermutation(n, tail(z))));
+		};
+		;;;Notkun: permutations(n)
+		;;;Fyrir:  n>=0 er heiltala.
+		;;;Gildi:  Listi allra umraðana listans [1,2,...,n].
+		rec fun permutations(n)
+		{
+			if (n==0)
+			{
+				return [[]];
+			};
+			return mapreduce(
+				fun(a){extendPermutation(n,a)},
+				fun(a,b){a ++ b},
+				[],
+				permutations(n-1));
+		};
+		writeln(mapreduce(fun(x){1+x},fun(a,b){a+b},0,[1,2,3]));
+		;;;writeln(mapreduce(fun(x){x*x},fun(a,b){a*b},1,[1,2,3]));
+		;;;writeln(fromTo(1, 4));
+		;;;writeln(fromTo(3, 3));
+		;;;writeln(insertAt([1,2,3,4], 2, 10));
+		;;;writeln(insertAt([1,2,3,4], 0, 10));
+		;;;writeln(insertAt([1,2,3,4], 4, 10));
+		;;;writeln(permutations(2));
+		;;;writeln(permutations(0));
+
+		
+		writeln(permutations(3));
+		writeln(permutations(0));
+		writeln([]);
+	};
+
+}}
+*
+BASIS
+;
+

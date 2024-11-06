@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+
+% Math
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+% Graphics
+
+\usepackage{graphicx}
+\usepackage{tikz}
+% Code environment
+\usepackage{minted}
+%\usepackage{bm}
+%\usepackage{siunitx}
+%\usepackage{animate}
+%\usepackage{hyperref}
+%\usepackage{movie15}
+%\usepackage{multicol}
+%\usepackage{changepage}
+\title{Formal Languages and Computability 4}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+
+\begin{document}
+\renewcommand\thepage{}
+	
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+	\section{Give an example where $A$, $B$ are nonregular, $A\neq B$, but 
+	$A\cap B$ is regular.}
+
+	We can take for example the nonregular languages $A=\{0^n1^n | n\geq 0\}$
+	 and $B=\{2^n3^n | n\geq0\}$ where $A\neq B$ and the intersection 
+	 $A\cap B = \{\epsilon\}$ which is clearly regular.
+
+	 \section{Let us define language $A$ accordingly, $A = \{i^nd^m | 0 
+	 \leq n < m\}$. Show that $A$ is nonregular.}
+
+	 We will use pumping lemma:
+
+	 Let us assume that there exists a DFA that describes $A$, so that 
+	 pumping lemma holds for some $p$. Let $s=i^pd^{p+1}$ so that 
+	 $|s| = p+p+1 = 2p+1 > p$
+
+	 Then we should be able to split $s$ into three pieces, $s = xyz$ so 
+	 that $xy^iz\in A$ for all $i \geq 0$. Since $|xy| \leq p$, $x$ and $y$ 
+	 both have to consist solely of $i$'s. Since that is the case, and 
+	 $|y| > 0$, we can always find an $i$ so that $xy^iz$ gives us a case 
+	 where $|xy^i| \geq |z|$, causing a contradiction.
+
+	 Therefore, the language is nonregular.
+
+	 \section{Let us consider ternary digits and a language $A$ which 
+		 consists of strings $w$ that start with a prefix defining the most 
+		 frequent symbol in the rest of the string. Show that no NFA exists 
+		 that could recognize $A$}
+
+		 We will use pumping lemma to prove that the language is nonregular. 
+		 Let us assume that there exists a NFA that recognizes $A$ so that 
+		 pumping lemma holds for some $p$. Let $s=02^p1^p0^p0$
+		 so that $|s| = 3p+2$
+
+		 We can then split any string $s$ into three parts, $s=xyz$ where 
+		 $xy^iz\in A$ for all $i\geq0$. We see that since $|xy| \leq p$, 
+		 there are a few cases for $y$:
+
+		 \begin{itemize}
+			 \item $y$ consists of only $0$. Here we can simply say that 
+				 $i=0$ and get the string $2^p1^p0^p0$ where the string 
+				 states that there are mostly $2$'s 
+				 in the string which is incorrect and we get a contradiction.
+			 \item $y$ consists of $0$ and then any number of $2$'s. 
+				 Here we can repeat the same trick and get $xy^0z$, stating 
+				 that there are mostly $2$'s in the string which is 
+				 incorrect.
+			 \item $y$ consists only of $2$'s. Here we can pump until $2$ 
+				 is the most common symbol, overtaking the number of $0$'s, 
+				 leading to a contradiction.
+		 \end{itemize}
+
+		 Here, all three cases can lead to a contradiction and therefore 
+		 pumping lemma deduces that the language is nonregular and therefore 
+		 there exists no NFA that could recognize it.
+
+
+\end{document}

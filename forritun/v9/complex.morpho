@@ -1,0 +1,138 @@
+{;;;
+
+Design document for "complex.mmod"
+==================================
+
+Exported
+--------
+
+Use:  z = complex(x,y);
+Pre:  x and y are floating point numbers.
+Post: z is the complex number x+yi.
+
+Use:  x = real(z);
+Pre:  z is a complex number.
+Post: x is the real part of z.
+
+Use:  x = imag(z);
+Pre:  z is a complex number.
+Post: x is the imaginary part of z.
+
+Use:  z = x+++y;
+Pre:  x and y are complex numbers.
+Post: z is a complex number that is the sum of x and y.
+
+Use:  z = x---y;
+Pre:  x and y are complex numbers.
+Post: z is a complex number that is the difference of x and y.
+
+Use:  z = x***y;
+Pre:  x and y are complex numbers.
+Post: z is a complex number that is the product of x and y.
+
+Use:  z = x///y;
+Pre:  x and y are complex numbers.
+      y is not zero.
+Post: z is a complex number that is the quotient of x and y.
+
+Imported
+--------
+
+Only BASIS function are imported.
+
+;;;}
+
+"complex.mmod" =
+!{{
+;;; Data invariant:
+;;;   A complex number z = x+yi, where x and y
+;;;   are double numbers, is represented as the pair [x$y].
+
++++ =
+	fun(x,y)
+	{
+	    complex(real(x) + real(y), imag(x) + imag(y));
+	};
+
+--- =
+	fun(x,y)
+	{
+	    complex(real(x) - real(y), imag(x) - imag(y));
+	};
+
+*** =
+	fun(x,y)
+	{
+		var xr = real(x);
+		var xi = imag(x);
+		var yr = real(y);
+		var yi = imag(y);
+		complex(xr * yr - xi * yi, xr * yi + xi * yr);
+	};
+
+
+/// =
+	fun(x,y)
+	{
+		var xr = real(x);
+		var xi = imag(x);
+		var yr = real(y);
+		var yi = imag(y);
+	    val d = yr * yr + yi * yi;
+	    complex((xr * yr + xi * yi)/d, (xi * yr - xr * yi)/d);
+	};
+
+complex =
+	fun(x,y)
+	{
+		[x$y];
+	};
+
+real =
+	fun(z)
+	{
+		return head(z);
+	};
+
+imag =
+	fun(z)
+	{
+		return tail(z);
+	};
+}}
+;
+
+"testcomplex.mexe" = main in
+!
+{{
+main =
+	fun()
+	{
+		writeln("(1+0i)+(0+2i)="++show(complex(1.0,0.0)+++complex(0.0,2.0)));
+		writeln("(1+i)+(3+4i)="++show(complex(1.0,1.0)+++complex(3.0,4.0)));
+		writeln("(1+0i)-(0+i)="++show(complex(1.0,0.0)---complex(0.0,1.0)));
+		writeln("(2+3i)-(4+5i)="++show(complex(2.0,3.0)---complex(4.0,5.0)));
+		writeln("(0+i)*(0+i)="++show(complex(0.0,1.0)***complex(0.0,1.0)));
+		writeln("(1-i)*(1+i)="++show(complex(1.0,-1.0)***complex(1.0,1.0)));
+		writeln("(1+i)*(2+3i)="++show(complex(1.0,1.0)***complex(2.0,3.0)));
+		writeln("(2+0i)/(1+i)="++show(complex(2.0,0.0)///complex(1.0,1.0)));
+		writeln("(-1+0i)/(0+i)="++show(complex(-1.0,0.0)///complex(0.0,1.0)));
+	};
+
+;;; Use:  s = show(z);
+;;; Pre:  z is a complex number.
+;;; Post: s is a string of format x+y*i
+;;;       where x is the real part of z
+;;;       and y is the imaginary part of
+;;;       z.
+show =
+	fun(z)
+	{
+		real(z)++"+"++imag(z)++"*i"
+	};
+}}
+*
+"complex.mmod"
+*
+BASIS
+;

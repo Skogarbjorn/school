@@ -1,0 +1,185 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+
+% Math
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+% Graphics
+
+\usepackage{graphicx}
+\usepackage{tikz}
+% Code environment
+\usepackage{minted}
+\usemintedstyle{manni}
+%\usepackage{bm}
+%\usepackage{siunitx}
+%\usepackage{animate}
+%\usepackage{hyperref}
+%\usepackage{movie15}
+%\usepackage{multicol}
+%\usepackage{changepage}
+\title{Gagnasafnsfræði Verkefni 8}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+	
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\begin{minted}[tabsize=4]{java}
+import java.io.*;
+import java.sql.*;
+
+public class V8a {
+	public static void main(String args[]) throws SQLException {
+		String url = "jdbc:sqlite:/home/ragnar/school/data/v8/company.db";
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection(url);
+			System.out.println("Connection established successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT SUM(Salary) AS Sum FROM EMPLOYEE");
+			while (rs.next()) {
+				System.out.println("Heildarlaun: " + rs.getDouble("Sum"));
+			}
+			rs.close();
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+}
+	\end{minted}
+	\begin{center}
+		\includegraphics[scale=0.35]{a.png}
+	\end{center}
+
+	\newpage
+	\section{}
+	\begin{minted}[tabsize=4]{java}
+import java.io.*;
+import java.sql.*;
+
+public class V8b {
+	public static void main(String args[]) throws SQLException {
+		String url = "jdbc:sqlite:/home/ragnar/school/data/v8/company.db";
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection(url);
+			System.out.println("Connection established successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE EMPLOYEE SET Salary = Salary * 1.05");
+			ResultSet rs = stmt.executeQuery("SELECT Salary FROM EMPLOYEE");
+			System.out.println("Laun hækkuð um 5%");
+			while (rs.next()) {
+				double n = rs.getDouble("Salary");
+				System.out.println(n);
+			}
+			rs.close();
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+	}
+}
+	\end{minted}
+	\begin{center}
+		\includegraphics[scale=0.33]{b.png}
+	\end{center}
+
+	\newpage
+	\section{}
+	\begin{minted}[tabsize=4]{java}
+import java.io.*;
+import java.sql.*;
+
+public class V8c {
+	public static void main(String args[]) throws SQLException {
+		String url = "jdbc:sqlite:/home/ragnar/school/data/v8/company.db";
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection(url);
+			System.out.println("Connection established successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT Ssn,Salary FROM EMPLOYEE");
+			PreparedStatement pstmt = conn.prepareStatement(
+				"UPDATE EMPLOYEE SET Salary = Salary + 100 WHERE Ssn = ?");
+			while (rs.next()) {
+				String ssn = rs.getString("Ssn");
+				pstmt.setString(1, ssn);
+				pstmt.executeUpdate();
+			}
+			System.out.println("Salary increased by 100");
+			rs = stmt.executeQuery("SELECT Salary FROM EMPLOYEE");
+			while (rs.next()) {
+				System.out.println(rs.getDouble("Salary"));
+			}
+			rs.close();
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+	}
+}
+	\end{minted}
+	\begin{center}
+		\includegraphics[scale=0.35]{c.png}
+	\end{center}
+
+	\newpage
+	\section{}
+	\begin{center}
+		\includegraphics[scale=0.35]{jdbc1.png}
+	\end{center}
+
+\end{document}

@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Gagnasafnsfræði Verkefni 11}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	\begin{minted}{java}
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+
+public class V11
+{
+    public static void main( String[] args )
+        throws Exception
+    {
+        Class.forName("org.sqlite.JDBC");
+        boolean USE_AUTOCOMMIT = args[0].equals("autocommit");
+        boolean USE_INDEX = args[1].equals("index");
+    
+        Connection conn = null;
+        try
+        {
+            conn = DriverManager.getConnection("jdbc:sqlite:v11.db");
+            conn.setAutoCommit(USE_AUTOCOMMIT);
+
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("DROP TABLE IF EXISTS R");
+			stmt.executeUpdate("DROP INDEX IF EXISTS RINDEX");
+			stmt.executeUpdate("CREATE TABLE R( key INTEGER PRIMARY KEY, value DOUBLE)");
+			if (USE_INDEX) {
+				stmt.executeUpdate("CREATE INDEX RINDEX ON R(value)");
+			}
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO R VALUES(?,?)");
+
+            long start,end;
+
+            start = System.nanoTime();
+            int i;
+            for( i=0 ; i!=1000000 ; i++ )
+            {
+				if (System.nanoTime()-start > 6e+10) break;
+				pstmt.setInt(1, i);
+				pstmt.setDouble(2, Math.random()*2);
+				pstmt.executeUpdate();
+            }
+            if( !USE_AUTOCOMMIT ) conn.commit();
+
+            end = System.nanoTime();
+            System.out.println("Tími fyrir/Time for "+
+                               i+" innsetningar/inserts: "+
+                               (double)(end-start)/1e9
+                              );
+
+            System.out.println("Tími per innsetningu/Time per insert: "+
+                               (double)((end-start)/1e9/i)
+                              );
+
+            start = System.nanoTime();
+            ResultSet r =
+                stmt.executeQuery
+                    ("SELECT COUNT(*) FROM R WHERE "+
+                     "value BETWEEN 0.01 AND 0.10"
+                    );
+            r.next();
+            System.out.println("Niðurstaða leitar/Result of search: "+r.getInt(1));
+            System.out.println("Tími fyrir leit/Time for search: "+
+                               (double)(System.nanoTime()-start)/1e9
+                              );
+        }
+        catch(SQLException e)
+        {
+            System.err.println(e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if(conn != null)
+                    conn.close();
+            }
+            catch(SQLException e)
+            {
+                System.err.println(e);
+            }
+        }
+    }
+}
+	\end{minted}
+	\newpage
+	\begin{center}
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			\multicolumn{4}{|c|}{\textbf{Tími fyrir innsetningu}} \\
+			\hline
+			\multicolumn{2}{|c|}{\textbf{Án vísis}} & 
+			\multicolumn{2}{c|}{\textbf{Með vísi}} \\
+			\hline
+			\textbf{Án AutoCommit} & \textbf{Með AutoCommit} & \textbf{Án AutoCommit} & \textbf{Með AutoCommit} \\
+			\hline
+			$1.4286\text{ }ms$ & $8.127808\text{ }\mu s$ &
+			$6.40508\text{ }\mu s$ & $9.681787\text{ }ms$ \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\begin{center}
+		\begin{tabular}{|l|l|}
+			\hline
+			\multicolumn{2}{|c|}{\textbf{Tími fyrir leit}} \\
+			\hline
+			\textbf{Án vísis} & \textbf{Með vísi} \\
+			\hline
+			$11.91289$ ms & $8.127808$ ms \\
+
+			\hline
+		\end{tabular}
+	\end{center}
+
+
+	\end{document}

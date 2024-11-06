@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Formal Languages and Computability 9}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+	We can just see that for every even number we can execute the function 
+	\begin{equation}
+		f(n) = \frac{n}{2}^2
+		\label{eq:gamer}
+	\end{equation}
+	Which maps each even number to a perfect square. Since this function 
+	is computable and provides the needed reduction, we see that $B$ is 
+	mapping reducible from $A$.
+
+	\section{}
+	We can show that $A$ is decidable by giving a description for a TM that 
+	decides on $A$.
+
+	Let $M$ be the TM, which takes in a pair of natural numbers $(a,b)$. 
+	We first calculate $a^2 + b^2$ and store that. Then we start with $c=1$ 
+	and iterate over all natural numbers, where for each one we calculate 
+	$c^2$ and compare it to our $a^2 + b^2$. If they are equal, we accept, 
+	otherwise we continue running. We can then just check if $c^2$ is larger 
+	than $a^2 + b^2$ and if so we reject.
+	\section{}
+	We show that $EQ_{CFG}$ is undecidable, we can construct a reduction 
+	from $ALL_{CFG}$. We do so by first assuming a decider $M$ for 
+	$EQ_{CFG}$ and then, for each grammar $G$, we construct a grammar $G_1$ that generates all 
+	possible strings $\Sigma^*$. Then we use $M$ to decide if 
+	$L(G) = L(G_1)$ and if it accepts, we accept, otherwise we reject. 
+
+	From here we see that we have reduced $ALL_{CFG}$ to $EQ_{CFG}$ which 
+	means that $EQ_{CFG}$ is also undecidable.
+
+	\section{}
+	We will prove this by creating a reduction from $A_{TM}$ to $F$.
+	Assume that a decider $R$ exists for $F$ and we will create a decider 
+	$S$ for $A_{TM}$.
+
+	Let $S$ run on input $\langle M,w\rangle$, and then we construct an 
+	encoding for a TM $\langle M_w\rangle$ which, for any input $x$, runs $M$ on $w$. 
+	If $M$ accepts, $M_w$ accepts, otherwise it rejects. Then we 
+	can run $R$ on $\langle M_w\rangle$ and if it accepts, $S$ rejects and 
+	otherwise it accepts.
+
+	Here we have reduced $A_{TM}$ to $F$, meaning that since $A_{TM}$ is 
+	known to be undecidable, $F$ also has to be undecidable. This works on 
+	the basis that if $M$ accepts $w$, $\langle M_w\rangle$ accepts all 
+	possible strings, which is an infinite set, so $R$ rejects it, meaning 
+	we can accept in turn. However, if $M$ doesnt accept $w$ or loops, 
+	$\langle M_w\rangle$ rejects every possible string, meaning 
+	$L(M_w) = \varnothing$ which is a finite set, meaning $R$ accepts it 
+	so $S$ can reject.
+\end{document}

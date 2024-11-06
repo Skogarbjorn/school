@@ -1,0 +1,387 @@
+\documentclass[leqno]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[parfill]{parskip}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{listings}
+\lstset{
+	basicstyle=\ttfamily,
+	mathescape
+}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\tikzset{
+node distance=5mm,
+>=stealth',
+black!70,
+text=black,
+graphs/every graph/.style={edges=rounded corners},
+vloop/.style={to path={-- ++(#1,0) |- (\tikztotarget)}},
+hloop/.style={to path={-- ++($(0,0)-(#1,0)$) |- (\tikztotarget)}},
+downright/.style={to path={-- ++(0.7,0) |- (\tikztotarget)}},
+rightup/.style={to path={-- ++(1,0) |- (\tikztotarget)}},
+hv path/.style={to path={-| (\tikztotarget)}},
+vh path/.style={to path={|- (\tikztotarget)}},
+box/.style={%
+    rectangle,
+    minimum size=6mm,
+	rounded corners=1mm,
+    draw=black,
+    % Font
+    %font=\itshape
+},
+start/.style={%
+    circle,inner sep=1pt,minimum size=1pt,fill=white,draw=black!70,text=black!70
+},
+end/.style={%
+    start, draw=black,text=black,
+},
+junction/.style={circle,inner sep=0pt,minimum size=0pt},
+}
+
+
+% Math
+\usepackage{amsmath, amssymb}
+% Graphics
+
+\usepackage{graphicx}
+% Code environment
+\usepackage{minted}
+
+\renewcommand\thesubsection{}
+
+\title{Forritunarmál Verkefni 1}
+\author{Ragnar Björn Ingvarsson, rbi3}
+
+
+\begin{document}
+	
+	\maketitle
+
+
+		\part{Einstaklingsverkefni}
+		\setcounter{section}{0}
+		\section{Hverjar af fullyrðingunum eru réttar?}
+
+		\section{Hvaða mállýsingar lýsa reglulegu máli?}
+
+\vspace{2em}
+
+		\begin{itemize}
+\begin{minipage}{.20\linewidth}
+			\item[a)]$\begin{alignedat}{3}
+\langle & x & \rangle :& \hspace{-.3em}:= & x & \langle x \rangle \\
+		&   &          &  |               & \langle & y \rangle \\
+\langle & y & \rangle :& \hspace{-.3em}:= & y & \langle y \rangle \\
+		&   &          &  |               & \langle & z \rangle \\
+\langle & z & \rangle :& \hspace{-.3em}:= & z & \langle z \rangle \\
+		&   &          &  |               & \langle & x \rangle \\
+		&   &          &  |               & \epsilon & \\
+\end{alignedat}$\end{minipage}\begin{minipage}{.80\linewidth}
+Þessi mállýsing lýsir reglulegu máli sem getur verið lýst með \\ reglulegu segðinni $(x^*y^*z^*)^*$ og þá með endanlegu stöðuvélinni:
+\\
+\begin{center}
+\begin{tikzpicture}
+	\node[main node] (A) {A};
+	\node[main node] at (2.5,0) (B) {B};
+	\node[main node] at (5,0) (C) {C};
+	\node[main node, minimum size=2.5em] at (5,0) (Cfin) {};
+
+
+	\path (A) edge node {$\lambda$} (B);
+	\path (B) edge node {$\lambda$} (C);
+	\path (A) edge [loop above=60] node {x} (A);
+	\path (B) edge [loop above=60] node {y} (B);
+	\path (C) edge [loop above=60] node {z} (C);
+	\path (C) edge [bend left=35] node {$\lambda$} (A);
+	\path (-1,0) edge node {} (A);
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\vspace{3em}
+
+\begin{minipage}{.20\linewidth}
+			\item[b)] $\begin{alignedat}{3}
+\langle & x & \rangle :& \hspace{-.3em}:= & x & \langle x \rangle \\
+		&   &          &  |               & \langle & y \rangle \\
+\langle & y & \rangle :& \hspace{-.3em}:= & y & \langle y \rangle \\
+		&   &          &  |               & \langle & z \rangle \\
+\langle & z & \rangle :& \hspace{-.3em}:= & z & \langle z \rangle \\
+		&   &          &  |               & \epsilon & \\
+    \end{alignedat}$
+\end{minipage}
+\begin{minipage}{.80\linewidth}
+	Þessi mállýsing lýsir einnig reglulegu máli sem getur verið lýst \\
+	með reglulegu segðinni $x^*y^*z^*$ sem við setjum upp í endanlega
+	 stöðuvél svona:
+	 \\
+\begin{center}
+	\begin{tikzpicture}
+	\node[main node] (A) {A};
+	\node[main node] at (2.5,0) (B) {B};
+	\node[main node] at (5,0) (C) {C};
+	\node[main node, minimum size=2.5em] at (5,0) (Cfin) {};
+
+
+	\path (A) edge node {$\lambda$} (B);
+	\path (B) edge node {$\lambda$} (C);
+	\path (A) edge [loop above=60] node {x} (A);
+	\path (B) edge [loop above=60] node {y} (B);
+	\path (C) edge [loop above=60] node {z} (C);
+	\path (-1,0) edge node {} (A);
+	\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\vspace{3em}
+
+\begin{minipage}{.20\linewidth}
+			\item[c)] $\begin{alignedat}{3}
+\langle & x & \rangle :& \hspace{-.3em}:= & \langle & x \rangle + \langle x \rangle \\
+		&   &          &  |               & (\langle & x \rangle) \\
+		&   &          &  |               & & x \\
+    \end{alignedat}$
+\end{minipage}
+\begin{minipage}{.80\linewidth}
+	Þessi mállýsing lýsir ekki reglulegu máli þar sem ekki er hægt að 
+	gera ráð fyrir öllum mögulegum samsetningum af svigum sem geta myndast
+	 hér. Ómögulegt er þá að búa til reglulega segð og einnig endanlega 
+	 stöðuvél
+ \end{minipage}
+
+ \vspace{3em}
+
+ \begin{minipage}{.20\linewidth}
+			\item[d)] $\begin{alignedat}{3}
+\langle & x & \rangle :& \hspace{-.3em}:= & \langle & x \rangle + \langle x \rangle \\
+		&   &          &  |               & & x \\
+    \end{alignedat}$
+\end{minipage}
+\begin{minipage}{.80\linewidth}
+	Þessi mállýsing lýsir hins vegar reglulegu máli sem getur verið skrifað 
+	sem reglulega segðin $(x+)^*x$ með endanlegu stöðuvélina:
+
+\vspace{1.5em}
+
+\begin{center}
+	\begin{tikzpicture}
+	\node[main node] (A) {A};
+	\node[main node] at (2.5,0) (B) {B};
+	\node[main node, minimum size=2.5em] at (2.5,0) (Cfin) {};
+
+
+	\path (A) edge node {x} (B);
+	\path (A) edge [loop below=60] node {x+} (A);
+	\path (-1,0) edge node {} (A);
+	\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\vspace{3em}
+
+\begin{minipage}{.20\linewidth}
+			\item[e)] $\begin{alignedat}{3}
+\langle & x & \rangle :& \hspace{-.3em}:= & (\langle & x \rangle)  \langle x \rangle \\
+		&   &          &  |               & & \epsilon \\
+    \end{alignedat}$
+
+\end{minipage}
+\begin{minipage}{.80\linewidth}
+
+	Þessi mállýsing lýsir ekki reglulegu máli af sömu ástæðu og c), ekki er 
+	hægt að gera ráð fyrir öllum mögulegum samsetningum sviga. Hvorki er þá 
+	hægt að að skrifa reglulega segð né teikna endanlega stöðuvél.
+
+\end{minipage}
+
+\vspace{3em}
+
+\begin{minipage}{.20\linewidth}
+			\item[f)] $\begin{alignedat}{3}
+\langle & x & \rangle :& \hspace{-.3em}:= & \langle & x \rangle  \langle x \rangle +\\
+		&   &          &  |               & & x \\
+    \end{alignedat}$
+\end{minipage}
+\begin{minipage}{.80\linewidth}
+	Þessi mállýsing lýsir reglulegu máli sem getur verið lýst með 
+	reglulegri segð á þennan máta: $x(x^++^+)*$. Svo lítur endanlega 
+	stöðuvélin svona út:
+
+	\begin{tikzpicture}
+		\node[main node] (A) {A};
+		\node[main node] at (2.5,0) (B) {B};
+		\node[main node] at (5,0) (C) {C};
+		\node[main node] at (7.5,0) (D) {D};
+		\node[main node, minimum size=2.5em] at (7.5,0) (Dfin) {};
+
+		\path (A) edge node {x} (B);
+		\path (B) edge node {x} (C);
+		\path (C) edge node {+} (D);
+		\path (B) edge [loop above=60] node {x} (B);
+		\path (C) edge [loop above=60] node {+} (C);
+		\path (C) edge [bend left=55] node {$\lambda$} (B);
+		\path (A) edge [bend right=55] node {x} (D);
+		\path (-1,0) edge node {} (A);
+	\end{tikzpicture}
+\end{minipage}
+\end{itemize}
+
+\newpage
+\section{Sýnið BNF fyrir \{x,y\} þar sem x er slétt tala}
+
+Við skrifum fyrst reglulega segð fyrir þetta og hún kemur út sem: 
+$y^*(xy^*xy^*)^*$. Við getum svo breytt henni í BNF og við fáum:
+\begin{lstlisting}
+		  <R> ::= <R> x <R> x <R> | <Y>
+		  	<Y> ::= y <Y> | $\lambda$
+\end{lstlisting}
+
+Og svo endanleg stöðuvél lítur svona út:
+
+\begin{center}
+	\begin{tikzpicture}
+		\node[main node] (A) {A};
+		\node[main node] at (2.5,0) (B) {B};
+		\node[main node, minimum size=2.5em] (Afin) {};
+
+		\path (A) edge [bend left=30] node {x} (B);
+		\path (A) edge [loop above=60] node {y} (A);
+		\path (B) edge [loop above=60] node {y} (B);
+		\path (B) edge [bend left=30] node {x} (A);
+		\path (-1,0) edge node {} (A);
+	\end{tikzpicture}
+\end{center}
+
+Einnig myndi þá útleiðslutré fyrir strenginn xyyx með þessu BNF vera svo:
+
+\begin{center}
+\begin{tikzpicture}[-, cube/.style={box,draw=white, thick}]
+	\node[cube] at (0,0.5) (start) {\texttt{<R>}};
+	\node[cube] at (-3.5,-1) (1R1) {\texttt{<R>}};
+	\node[cube] at (-2,-1) (1x1) {\texttt{x}};
+	\node[cube] at (0,-1) (1R2) {\texttt{<R>}};
+	\node[cube] at (2,-1) (1x2) {\texttt{x}};
+	\node[cube] at (3.5,-1) (1R3) {\texttt{<R>}};
+
+	\node[cube] at (-3.5,-2) (2Y1) {\texttt{<Y>}};
+	\node[cube] at (0,-2) (2Y2) {\texttt{<Y>}};
+	\node[cube] at (3.5,-2) (2Y3) {\texttt{<Y>}};
+
+	\node[cube] at (-3.5,-3) (3l1) {$\lambda$};
+	\node[cube] at (-1.2,-3) (3y1) {\texttt{y}};
+	\node[cube] at (1.2,-3) (3Y1) {\texttt{<Y>}};
+	\node[cube] at (3.5,-3) (3l2) {$\lambda$};
+
+	\node[cube] at (0.8,-4) (4y1) {\texttt{y}};
+	\node[cube] at (1.6,-4) (4Y1) {\texttt{<Y>}};
+
+	\node[cube] at (1.6,-5) (5l1) {$\lambda$};
+
+	\path (start) edge node {} (1R1);
+	\path (start) edge node {} (1x1);
+	\path (start) edge node {} (1R2);
+	\path (start) edge node {} (1x2);
+	\path (start) edge node {} (1R3);
+
+	\path (1R1) edge node {} (2Y1);
+	\path (1R2) edge node {} (2Y2);
+	\path (1R3) edge node {} (2Y3);
+
+	\path (2Y1) edge node {} (3l1);
+	\path (2Y2) edge node {} (3y1);
+	\path (2Y2) edge node {} (3Y1);
+	\path (2Y3) edge node {} (3l2);
+
+	\path (3Y1) edge node {} (4y1);
+	\path (3Y1) edge node {} (4Y1);
+
+	\path (4Y1) edge node {} (5l1);
+\end{tikzpicture}
+\end{center}
+
+\section{Sýnið BNF o.fl. fyrir mál með $a$, $+$ og svigum}
+
+Sjáum útfrá löglegum dæmum sem voru tekin fyrir að BNF myndi líta svo út:
+\begin{lstlisting}
+		 <R> ::= a | (<R>) | <R> + <R>
+\end{lstlisting}
+Svo er EBNF svona:
+\begin{lstlisting}
+		 R = a | (, R, ) | R, +, R;
+\end{lstlisting}
+
+Og loks lítur málrit fyrir þetta mál segða svona út:
+
+
+\tikzset{
+node distance=5mm,
+>=stealth',
+black!70,
+text=black,
+graphs/every graph/.style={edges=rounded corners},
+vloop/.style={to path={-- ++(#1,0) |- (\tikztotarget)}},
+hloop/.style={to path={-- ++($(0,0)-(#1,0)$) |- (\tikztotarget)}},
+downright/.style={to path={-- ++(0.7,0) |- (\tikztotarget)}},
+rightup/.style={to path={-- ++(1,0) |- (\tikztotarget)}},
+hv path/.style={to path={-| (\tikztotarget)}},
+vh path/.style={to path={|- (\tikztotarget)}},
+box/.style={%
+    rectangle,
+    minimum size=6mm,
+	rounded corners=1mm,
+    draw=black,
+    % Font
+    %font=\itshape
+},
+start/.style={%
+    circle,inner sep=1pt,minimum size=1pt,fill=white,draw=black!70,text=black!70
+},
+end/.style={%
+    start, draw=black,text=black,
+},
+junction/.style={circle,inner sep=0pt,minimum size=0pt},
+}
+
+\begin{center}
+\begin{tikzpicture}
+	\node[start] (start) {R};
+	\node[junction] at (1,0) (p1) {};
+	\node[box] at (3,0) (a) {a};
+	\node[junction] at (5,0) (p2) {};
+	\node[end] at (6,0) (end) {};
+	\node[junction] at (1,-1) (p3) {};
+	\node[box] at (2,-1) (Lpar) {(};
+	\node[end] at (3,-1) (R1) {R};
+	\node[box] at (4,-1) (Rpar) {)};
+	\node[junction] at (5,-1) (p4) {};
+	\node[junction] at (1,-2) (p5) {};
+	\node[end] at (2,-2) (R2) {R};
+	\node[box] at (3,-2) (+) {+};
+	\node[end] at (4,-2) (R3) {R};
+	\node[junction] at (5,-2) (p6) {};
+
+	\graph [use existing nodes] {
+	start -> a -> end;
+	start ->[downright] Lpar;
+	Lpar -> R1 -> Rpar;
+	Rpar ->[rightup] end;
+	start ->[downright] R2;
+	R2 -> + -> R3;
+	R3 ->[rightup] end;
+	};
+
+\end{tikzpicture}
+\end{center}
+
+\end{document}

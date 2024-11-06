@@ -1,0 +1,83 @@
+rdx (int)  0x7fffffffdaf0 should be 8
+rcx (char) 0x7fffffffdaef should be p
+r8  (int)  0x7fffffffdaf4 should be 9
+
+two numbers
+first is 14 (less than 15)
+
+take input1 (14), 0 and 14 as inputs to func4
+
+FUNC4
+rdi <15 (input1)
+rsi 0
+rdx 14
+rax 14
+rbx 7
+
+shift rbx (1110) by 31 right so rbx = 0
+then add rax to rbx so rbx is 14 again (?)
+
+so c code is
+
+int func4(int a, int b, int c) {
+	int x = c - b;
+	int y = ((x>>31) + x)>>1 + b;
+	if ( y > a ) {
+		y += func4(a, b, y-1);
+		return y;
+	} else if ( a > y ) {
+		y += func4(a, y+1, c);
+		return y;
+	} else {
+		return y;
+	}
+}
+
+first value in eax
+sub 1 from eax
+FIRST VALUE LESS THAN 7 probably 6 then
+SECOND VALUE LESS THAN 7
+ALL VALUES NOT EQUAL TO ANY OTHERS
+
+ALL VALUES HAVE NOW BECOME 7 - VALUE
+
+0x8(%rsp) is rsp + 10
+r15(d) = 6
+r14 = rsp + 24
+r13 = rsp + 10
+r12 = rsp + 14
+rsi = 0x0
+rbp = rsp + 24
+rax = 0x1
+rbx = 6
+rcx = 7 - input1
+rdx = 0x99
+
+4 3 2 1 6 5
+
+STORED AS HEX
+1=10  (address to 0x0000555555559250)
+2=50  (address to 0x00000004000002c0)
+3=40  (address to 0x0000555555559240)
+4=30  (address to 0x0000000300000352)
+5=20  (address to 0x0000555555559110)
+6=10  (address to 0x000000050000034f)
+
+0x0000555555559230
+
+
+rax = second
+rbx = first
+
+5 = 3cb
+4 = 352
+2 = 34f
+1 = 33e
+3 = 2c0
+6 = 299
+
+352
+2c0
+34f
+
+423

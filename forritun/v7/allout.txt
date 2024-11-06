@@ -1,0 +1,35 @@
+Throwable: java.lang.Integer cannot be cast to is.hi.cs.morpho.Pair
+Error or exception
+	"java.lang.Integer cannot be cast to is.hi.cs.morpho.Pair"
+in interpreted function function main
+at pc=13 at or before line 9 in file "test.morpho"
+
+java.lang.Error: java.lang.ClassCastException: java.lang.Integer cannot be cast to is.hi.cs.morpho.Pair
+	at is.hi.cs.morpho.Task.timeSlice(Task.java:598)
+	at is.hi.cs.morpho.Machine$RunnableTask.run(Machine.java:109)
+	at is.hi.cs.morpho.Machine$TaskRunner.run(Machine.java:185)
+Caused by: java.lang.ClassCastException: java.lang.Integer cannot be cast to is.hi.cs.morpho.Pair
+	at is.hi.cs.morpho.Builtins$13.preExecute(Builtins.java:1184)
+	at is.hi.cs.morpho.Builtins$Op.execute(Builtins.java:1086)
+	at is.hi.cs.morpho.Builtins.execute(Builtins.java:949)
+	at is.hi.cs.morpho.Task.call(Task.java:759)
+	at is.hi.cs.morpho.operation.Call.execute(Call.java:61)
+	at is.hi.cs.morpho.InterpretedFunction.step(InterpretedFunction.java:30)
+	at is.hi.cs.morpho.Task.timeSlice(Task.java:509)
+	... 2 more
+java.lang.Error: java.lang.Error: java.lang.ClassCastException: java.lang.Integer cannot be cast to is.hi.cs.morpho.Pair
+	at is.hi.cs.morpho.Machine$RunnableTask.run(Machine.java:116)
+	at is.hi.cs.morpho.Machine$TaskRunner.run(Machine.java:185)
+Caused by: java.lang.Error: java.lang.ClassCastException: java.lang.Integer cannot be cast to is.hi.cs.morpho.Pair
+	at is.hi.cs.morpho.Task.timeSlice(Task.java:598)
+	at is.hi.cs.morpho.Machine$RunnableTask.run(Machine.java:109)
+	... 1 more
+Caused by: java.lang.ClassCastException: java.lang.Integer cannot be cast to is.hi.cs.morpho.Pair
+	at is.hi.cs.morpho.Builtins$13.preExecute(Builtins.java:1184)
+	at is.hi.cs.morpho.Builtins$Op.execute(Builtins.java:1086)
+	at is.hi.cs.morpho.Builtins.execute(Builtins.java:949)
+	at is.hi.cs.morpho.Task.call(Task.java:759)
+	at is.hi.cs.morpho.operation.Call.execute(Call.java:61)
+	at is.hi.cs.morpho.InterpretedFunction.step(InterpretedFunction.java:30)
+	at is.hi.cs.morpho.Task.timeSlice(Task.java:509)
+	... 2 more

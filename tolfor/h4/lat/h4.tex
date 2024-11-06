@@ -1,0 +1,219 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usepackage{fancyvrb}
+\usepackage{xlop}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+
+% Math
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+% Graphics
+
+\usepackage{graphicx}
+\usepackage{tikz}
+% Code environment
+\usepackage{minted}
+%\usepackage{bm}
+%\usepackage{siunitx}
+%\usepackage{animate}
+%\usepackage{hyperref}
+%\usepackage{movie15}
+%\usepackage{multicol}
+%\usepackage{changepage}
+\title{Tölvutækni og forritun Heimadæmi 4}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+
+\begin{document}
+\renewcommand\thepage{}
+	
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{}
+
+	\begin{itemize}
+		\item[] \textbf{\texttt{int x = 5, y;}}
+
+			Hér er \texttt{x = 5} vegna þess að við segjum að svo sé en 
+			\texttt{y} er enn óskilgreint.
+		\item[] \textbf{\texttt{x *= y = 2;}}
+
+			Hér verður \texttt{y = 2} á undan og þá margfaldast \texttt{x} 
+			við $2$ og verður $10$.
+		\item[] \textbf{\texttt{x = y == 2;}}
+
+			Hér verður \texttt{x} sanngildið á \texttt{y == 2} sem er þá 
+			satt, og vegna þess að sanngildi í c eru $0$ eða $1$ verður 
+			\texttt{x = 1}
+		\item[] \textbf{\texttt{x == (y = 3);}}
+
+			Hér erum við aðeins að skilgreina segð svo \texttt{x} er 
+			óbreytt, en \texttt{y} fær gildið $3$.
+		\item[] \textbf{\texttt{x = (unsigned)-3 > 0 ? y <{}< 1 : y >{}> 1;}}
+
+			Hér, þar sem \texttt{(unsigned)x, $x \neq 0$} er alltaf jákvæð, þá er segðin 
+			sönn og við gefum \texttt{x} gildi \texttt{y} nema bitunum 
+			er hliðrað til vinstri um einn bita, svo í stað $11_2$ verður 
+			\texttt{x = 6}, eða $110_2$.
+	\end{itemize}
+
+	\section{}
+
+	\begin{itemize}
+		\item[a)] Án formerkis getum við notað alla bitana í töluna og fáum 
+			\textit{UMax$_6$} $= 2^6-1 = 63$
+		\item[b)] Við fáum hér að við notum einn bita í formerkið og getum 
+			þá fengið \textit{TMax$_6$} $= 2^5 - 1 = 31$ og
+			\textit{TMin$_6$} $= -2^5 = -32$.
+		\item[c)] Við sjáum að $0x17 = 00010111_2 = 010111_2$ í 6-bita 
+			tvíandhverfu-formi, og $0x21 = 100001_2$. Þá framkvæmum við 
+			samlagningu og fáum:
+
+			\begin{center}
+			\begin{tabular}{c@{\,}c@{\,}c@{\,}c@{\,}c@{\,}c@{\,}c}
+				  &   &   & \textit{\textcolor{gray}{1}} & \textit{\textcolor{gray}{1}} & \textit{\textcolor{gray}{1}} &   \\
+				  & 0 & 1 & 0 & 1 & 1 & 1 \\
+				+ & 1 & 0 & 0 & 0 & 0 & 1 \\
+				\hline
+				  & 1 & 1 & 1 & 0 & 0 & 0 \\
+			\end{tabular}
+			\end{center}
+
+			Svo við fáum niðurstöðuna $111000_2 = (-32 + 16 + 8)_{10} = -8_{10}$
+		\item[d)] $-9$ á 6-bita tvíandhverfu-formi er $110111_2$, en ef við 
+			stýfum hana niður í fjóra bita fæst að tveir gildismestu 
+			bitarnir detta út svo við fáum $0111_2 = 7$. Gildi tölunnar 
+			breytst töluvert.
+	\end{itemize}
+
+	\section{}
+
+	\begin{itemize}
+		\item[a)] Einfölduð útgáfa myndi nota þá \texttt{char} í stað 
+			\texttt{int} svo við myndum fá fallið
+
+			\begin{Verbatim}[fontfamily=courier]
+int hmm( unsigned char n ) {
+	return (~n) & (~n << 1);
+}
+			\end{Verbatim}
+			\begin{itemize}
+				\item[\textit{i)}] \texttt{n = 01010101}
+					Við byrjum þá á að fá \textasciitilde\texttt{n = 10101010} sem við 
+					svo hliðrum um einn til vinstri og fáum \textasciitilde
+					\texttt{n <{}< 1 = 01010100}. Síðan og-um við þessi 
+					saman og skilum 00000000.
+				\item[\textit{ii)}] \texttt{n = 10010010}
+					Hér gerum við það sama og fáum:
+
+					\textasciitilde\texttt{n = 01101101}
+
+					\textasciitilde\texttt{n <{}< 1 = 11011010}
+
+					og-um það svo saman og skilum \texttt{01001000}.
+			\end{itemize}
+
+		\item[b)] 
+			Fallið vinnur svo að við neitum öllum bitunum, svo við fáum jákvæða 
+			útkomu fyrir núllin, og svo og-um við saman töluna og 
+			tölunni hliðrað um einn til vinstri. Þá fáum við einn allstaðar 
+			þar sem tvö núll hafa legið saman í upprunalega gildinu.
+		\item[c)] Við einfaldlega tékkum einnig hvort það sé núll vinstra 
+			megin við hvert núll líka, svo:
+
+			\begin{Verbatim}[fontfamily=courier]
+int hmm( unsigned int n ) {
+	return (~n) & (~n << 1) & (~n >> 1);
+}
+			\end{Verbatim}
+
+			Þetta tékkar fyrst hvort það séu tvö núll hlið 
+			við hlið og svo tékkar það hvort fyrirfinnist annað núll hinum 
+			megin.
+		\item[d)] Hér þurfum við einungis að sleppa því að neita tölunni 
+			því við viljum þá fá jákvæða útkomu á einum, sem er þannig nú 
+			þegar.
+
+			\begin{Verbatim}[fontfamily=courier]
+int hmm( unsigned int n ) {
+	return n & (n << 1);
+}
+			\end{Verbatim}
+	\end{itemize}
+
+	\section{}
+
+	\begin{itemize}
+		\item[a)] \begin{Verbatim}[fontfamily=courier]
+unsigned long sammengi(unsigned long a, unsigned long b) {
+	return a | b;
+}
+			\end{Verbatim}
+		\item[b)] \begin{Verbatim}[fontfamily=courier]
+unsigned long munur(unsigned long a, unsigned long b) {
+	return a & ~b;
+}
+			\end{Verbatim}
+		\item[c)] 
+			Segðin \texttt{1ul <{}< i} táknar semsagt $2^i$, þar sem við 
+			tökum 64 bita, og setjum minnsta sem einn en alla hina sem 0.
+
+			Síðan hliðrum við þessum bita um 0-63 til vinstri, sem gefur 
+			okkur alltaf bara einn ás, en á mismunandi stað, svo hann 
+			hefur vægi sem fer eftir hvað \textit{i} er.
+		\item[d)] \begin{Verbatim}[fontfamily=courier]
+int stakI(unsigned long a, int i) {
+	return (a & (1ul << i)) > 0;
+}
+			\end{Verbatim}
+	\end{itemize}
+
+	\section{}
+
+	\begin{itemize}
+		\item[a)] Við sjáum að með heiltöludeilingu ættum við að fá 
+			$\nicefrac{-69}{8} = -8$ en með bitum fæst $10111011_2 \gg 3 = 
+			11110111_2 = -9$. Þetta er vegna þess að bit shift deiling í 
+			c með neikvæðum tölum rúnnar til $-\infty$.
+
+			Til að laga þetta getum við bætt við bjögun, og fengið semsagt 
+
+			$(10111011_2 + (1 \ll 3) -1) \gg 3 = 
+			(10111011_2 + 00001000_2 - 1) \gg 3 \\ = (11000100_2) \gg 3 = 
+			11111000_2 = -8_{10}$ 
+		\item[b)] Þetta virkar ekki alltaf, til dæmis ef við tökum 
+			jákvæðu töluna $8 = 00001000_2$ og deilum með $3$, þá fáum við:
+
+			$(00001000_2 + (1\ll3)-1) \gg 3 \\
+			= (00001000_2 + 00001000 - 1) \gg 3 \\
+			= (00010000_2 - 1) \gg 3 \\
+			= 00001111_2 \gg 3 \\
+			= 00000001_2 = 1_{10}$
+
+			Við sjáum að þetta er alls ekki rétta niðurstaðan, þar sem 
+			rétt hefði verið að fá $\lfloor 2.66667\rfloor = 2$.
+	\end{itemize}
+
+\end{document}

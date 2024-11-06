@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+% Tables and lists
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{arrows, positioning, calc}
+
+% Math
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+% Graphics
+
+\usepackage{graphicx}
+\usepackage{tikz}
+% Code environment
+\usepackage{minted}
+%\usepackage{bm}
+%\usepackage{siunitx}
+%\usepackage{animate}
+%\usepackage{hyperref}
+%\usepackage{movie15}
+%\usepackage{multicol}
+%\usepackage{changepage}
+\title{Forritunarmál Hópverkefni 2}
+\author{Ragnar Björn Ingvarsson, rbi3 \\ Daníel Snær Halldórsson, dsh11 
+\\ Ólafur Sær Sigursteinsson, oss27}
+
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{}
+	\begin{verbatim}
+(define (last x)
+  (if (null? (cdr x))
+      (car x)
+      (last (cdr x))
+      )
+  )
+(last '(1 2 3))
+	\end{verbatim}
+		\includegraphics[scale=0.6]{last.png}
+
+	\newpage
+	\section{}
+	\begin{verbatim}
+(define (remove-last x)
+  (if (null? (cdr x))
+      '()
+      (cons (car x) (remove-last (cdr x)))
+      )
+  )
+(remove-last '(1 2 3))
+	\end{verbatim}
+		\includegraphics[scale=0.6]{remove-last.png}
+
+	\newpage
+	\section{}
+	\begin{verbatim}
+(define (product x)
+  (define (producthelp x y)
+    (if (null? x)
+        y
+        (producthelp (cdr x) (* y (car x)))
+        )
+    )
+  (producthelp x 1)
+  )
+(product '(1 2 3))
+(product '())
+	\end{verbatim}
+		\includegraphics[scale=0.6]{product.png}
+
+	\newpage
+	\section{}
+	\begin{verbatim}
+(define (myappend x y)
+  (if (null? x)
+     y
+     (myappend (remove-last x) (cons (last x) y))
+     )
+  )
+(myappend '(1 2 3) '(1 2))
+	\end{verbatim}
+		\includegraphics[scale=0.6]{myappend.png}
+
+\end{document}
