@@ -1,56 +1,18 @@
-{-
-Save this file under the name condMap.hs on your
-computer.
-
-Finish programming the ten functions that have a
-skeleton in this file. Most of them are one-liners.
-
-Once you have programmed the functions you can
-compile this file using the command
-  ghc --make condMap.hs
-and you can then run the resulting executable
-file, which will be condmap.exe on Windows
-and will be simply condmap on Unix. So use
-this command on Windows:
-  condMap
-and use this command on Unix:
-  ./condMap
-
-Run the program and show the output.
--}
-
 -- This loads the definition of MonadPlus:
 import Control.Monad
 
-{-
-Usage: let y = condMapI p f x
-       where I is one of 1,2,3,4,5,6,7,8,9,10.
-Pre:   x=[x1,x2,...,xN] is a list of type [a]
-       of values that are valid arguments for
-       p and f. p is (a -> Bool), f is (a -> b).
-Post:  y is a list of the values (f z) where
-       the z values are the values in the x list
-       such that (p z) is True.
 
-ALTERNATIVELY, YOU MAY USE THE FOLLOWING,
-MORE GENERAL, DESCRIPTION:
-
-Usage: let y = condMapI p f x
-       where I is one of 1,2,3,4,5,6,7,8,9,10.
-Pre:   x is a value of type (m a) where m is
-       a monad such that (MonadPlus m) holds,
-       containing values that are valid
-       arguments for p and f. p is (a -> Bool),
-       f is (a -> b).
-Post:  y is a value of type (m b) containing the
-       values (f z) where the z values are the
-       values in the x container such that (p z)
-       is True.
-
-Note that this latter description fulfills
-all the conditions that the former description
-fulfills and more.
--}
+-- Usage: let y = condMapI p f x
+--        where I is one of 1,2,3,4,5,6,7,8,9,10.
+-- Pre:   x is a value of type (m a) where m is
+--        a monad such that (MonadPlus m) holds,
+--        containing values that are valid
+--        arguments for p and f. p is (a -> Bool),
+--        f is (a -> b).
+-- Post:  y is a value of type (m b) containing the
+--        values (f z) where the z values are the
+--        values in the x container such that (p z)
+--        is True.
 
 -- Only use the functions map and filter,
 -- and, of course f and p. Use no other built-in
@@ -92,7 +54,7 @@ condMap4 p f x = do {
 condMap5 :: (a->Bool)->(a->b)->[a]->[b]
 condMap5 p f x = x >>= \a -> if p a then return $ f a else mzero
 
---Use (:) and no other built-in function.
+-- Use (:) and no other built-in function.
 -- You should not use any if-expressions.
 condMap6 :: (a->Bool)->(a->b)->[a]->[b]
 condMap6 _ _ [] = []

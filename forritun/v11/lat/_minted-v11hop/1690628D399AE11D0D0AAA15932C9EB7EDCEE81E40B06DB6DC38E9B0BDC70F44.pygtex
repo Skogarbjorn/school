@@ -1,0 +1,118 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} This loads the definition of MonadPlus:}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Control.Monad}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Usage: let y = condMapI p f x}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}        where I is one of 1,2,3,4,5,6,7,8,9,10.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Pre:   x is a value of type (m a) where m is}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}        a monad such that (MonadPlus m) holds,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}        containing values that are valid}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}        arguments for p and f. p is (a \PYGZhy{}\PYGZgt{} Bool),}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}        f is (a \PYGZhy{}\PYGZgt{} b).}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Post:  y is a value of type (m b) containing the}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}        values (f z) where the z values are the}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}        values in the x container such that (p z)}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}        is True.}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Only use the functions map and filter,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} and, of course f and p. Use no other built\PYGZhy{}in}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} functions.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use no list comprehension and no do\PYGZhy{}notation.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} You should use no if\PYGZhy{}expressions.}
+\PYG{n+nf}{condMap1}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap1}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{map}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{filter}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{x}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use list comprehension and use no functions}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} other than f and p.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} You should use no if\PYGZhy{}expressions.}
+\PYG{n+nf}{condMap2}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap2}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{f}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{]}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use the built\PYGZhy{}in function concatMap and no other built\PYGZhy{}in}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} function. You should also use an if\PYGZhy{}expression.}
+\PYG{n+nf}{condMap3}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap3}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{concatMap}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{]}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{x}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use do\PYGZhy{}notation and use no built\PYGZhy{}in function and}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} do not use list comprehension. You should also use}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} an if\PYGZhy{}expression.}
+\PYG{n+nf}{condMap4}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap4}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{do}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{gamer}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{     }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{[]}
+\PYG{+w}{        }\PYG{n}{gamer}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{k+kt}{:}\PYG{n}{xs}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{gamer}\PYG{+w}{ }\PYG{n}{xs}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{n}{gamer}\PYG{+w}{ }\PYG{n}{xs}
+\PYG{+w}{    }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{n}{gamer}\PYG{+w}{ }\PYG{n}{x}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use (\PYGZgt{}\PYGZgt{}=) and return and no other built\PYGZhy{}in function.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} You may also use the built\PYGZhy{}in special value mzero,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} which will allow you to create a more general function}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} that works for all monads m such that (MonadPlus m)}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} holds. You should also use an if\PYGZhy{}expression.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The type of condMap5 may be either}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}  condMap5 :: (MonadPlus m) =\PYGZgt{} (a\PYGZhy{}\PYGZgt{}Bool)\PYGZhy{}\PYGZgt{}(a\PYGZhy{}\PYGZgt{}b)\PYGZhy{}\PYGZgt{}m a\PYGZhy{}\PYGZgt{}m b}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} OR}
+\PYG{n+nf}{condMap5}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap5}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZgt{}\PYGZgt{}=}\PYG{+w}{ }\PYG{n+nf}{\PYGZbs{}}\PYG{n}{a}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{n}{return}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{n}{mzero}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use (:) and no other built\PYGZhy{}in function.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} You should not use any if\PYGZhy{}expressions.}
+\PYG{n+nf}{condMap6}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap6}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{[]}
+\PYG{n+nf}{condMap6}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{k+kt}{:}\PYG{n}{xs}\PYG{p}{)}
+\PYG{+w}{  }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{  }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{condMap6}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{xs}
+\PYG{+w}{  }\PYG{o}{|}\PYG{+w}{ }\PYG{k+kt}{True}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{condMap6}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{xs}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use head, tail and (:) and no other built\PYGZhy{}in function.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} You should also use if\PYGZhy{}expressions.}
+\PYG{n+nf}{condMap7}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap7}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{  }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{null}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{k+kr}{then}
+\PYG{+w}{    }\PYG{k+kt}{[]}
+\PYG{+w}{  }\PYG{k+kr}{else}
+\PYG{+w}{    }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{head}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{k+kr}{then}
+\PYG{+w}{      }\PYG{p}{(}\PYG{n}{f}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{head}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap6}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{tail}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{)}
+\PYG{+w}{    }\PYG{k+kr}{else}
+\PYG{+w}{      }\PYG{n}{condMap6}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{tail}\PYG{+w}{ }\PYG{n}{x}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use do\PYGZhy{}notation and use only the built\PYGZhy{}in function}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} return. Do not use any kind of list notation except [].}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Instead of [] you may use the built\PYGZhy{}in special value}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} mzero, which will make the function more general so}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} that it works for monads m such that (MonadPlus m)}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} holds. You should also use an if\PYGZhy{}expression.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The type of condMap8 could be}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} condMap8 :: (a\PYGZhy{}\PYGZgt{}Bool)\PYGZhy{}\PYGZgt{}(a\PYGZhy{}\PYGZgt{}b)\PYGZhy{}\PYGZgt{}[a]\PYGZhy{}\PYGZgt{}[b]}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} OR, MORE GENERAL GENERAL:}
+\PYG{n+nf}{condMap8}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{MonadPlus}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{m}\PYG{+w}{ }\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{m}\PYG{+w}{ }\PYG{n}{b}
+\PYG{n+nf}{condMap8}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{do}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZgt{}\PYGZgt{}=}\PYG{+w}{ }\PYG{n+nf}{\PYGZbs{}}\PYG{n}{y}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{n}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{f}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{n}{mzero}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use the built\PYGZhy{}in functions foldr and (:) and no}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} other built\PYGZhy{}in functions. Use no list notation}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} except []. You may use an anonymous helper function}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} and you may use if\PYGZhy{}expressions.}
+\PYG{n+nf}{condMap9}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap9}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{foldr}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{a}\PYG{+w}{ }\PYG{n}{b}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{a}\PYG{k+kt}{:}\PYG{n}{b}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{n}{x}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Use the built\PYGZhy{}in functions foldl, reverse and (:) and no}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} other built\PYGZhy{}in functions. Use no list notation}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} except []. You may use an anonymous helper function}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} and you may use if\PYGZhy{}expressions.}
+\PYG{n+nf}{condMap10}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{a}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{n}{b}\PYG{p}{)}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}
+\PYG{n+nf}{condMap10}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{reverse}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{foldl}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{a}\PYG{+w}{ }\PYG{n}{b}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{b}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{b}\PYG{k+kt}{:}\PYG{n}{a}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{)}
+
+\PYG{n+nf}{main}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{main}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{do}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap1}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap2}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap3}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap4}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap5}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap6}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap7}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap8}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap9}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\PYG{+w}{  }\PYG{n}{print}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{condMap10}\PYG{+w}{ }\PYG{n}{odd}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{10}\PYG{p}{])}
+\end{Verbatim}

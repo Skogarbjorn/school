@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Notkun: powerList i j}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Fyrir:  i og j eru heiltölur.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Gildi:  Listi allra mögulegra lista sem eru}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}         undirlistar listans [i,i+1,...,j].}
+\PYG{n+nf}{powerList}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{n}{j}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{     }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{[]}\PYG{p}{]}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{powerList}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{map}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{k+kt}{:}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{powerList}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{)}
+\end{Verbatim}
