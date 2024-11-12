@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Tölvugrafík Verkefni 3}
+\author{Ragnar Björn Ingvarsson, rbi3 \\
+Elías Ver Bjarnason, evb17}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+	\begin{center}\url{https://skogarbjorn.github.io/v3redo/index.html}\end{center}
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{Verkefnislýsing}
+Í þessu forritunarverkefni á að útfæra einfalda
+þrívíddarútgáfu af hinum sígilda tölvuleik Frogger. Í leiknum
+á að koma litlum frosk yfir umferðargötu án þess að bílarnir
+keyri á hann og síðan á staurum yfir á án þess að hann detti
+út í ánna
+
+\section{Okkar lausn}
+Við notuðum semsagt THREE.js og byrjuðum á $16x13$ grind sem froskurinn getur hreyft sig um á, 
+og byrjum leikinn á því að gefa bílum, staurum og skjaldbökum staðsetningu af handahófi 
+og geymum þá í fylkjum sem eru skipt í raðir svo hægt sé að komast framhjá 
+óþarfa tékkum fyrir collision seinna meir. Síðan höfum við það þannig að 
+hver röð er með sér hraða geymdir í \texttt{laneSpeed} fylkinu og uppfærum 
+þannig staðsetningu allra hluta í hverju render \texttt{tick()} kalli, sem 
+gerist á $10$ms fresti. Við látum svo hlutina birtast hinum megin þegar þeir 
+fara út af leikborðinu. 
+
+Við ákváðum að hafa myndavélina þannig að hún helst fyrir aftan spilarann í miðjunni 
+og færist áfram með honum en horfir á hann ef hann færist til hliðar. 
+Svo er að sjálfsögðu hægt að færa sig inn í sjónarhorn frosksins og þá 
+látum við hann hverfa svo við teiknum hann ekki og notum \texttt{PointerLockControls} frá THREE.js til að færa sjónarhornið til. 
+Myndavélin horfir alltaf á kubbinn á staðnum sem hann er teiknaður en 
+raun-hnitin hans hækka og lækka alltaf bara um heilan reit í einu. Við 
+notum svo \texttt{smooth} fallið til að færa teiknaða spilarann um helming 
+í átt að raun-hnitunum hverjar $10$ms svo það verði þægilegt að horfa á 
+hann hreyfast.
+
+Síðan erum við með mjög lágar líkur í hverju \texttt{tick} kalli að einhver 
+skjaldbaka fari í kaf. Þá getur hún ekki farið í kaf aftur á meðan hún er 
+að kafa og fer línulega niður og svo rís aftur eftir nokkrar sekúndur. 
+
+Sama virknin er í raun með flugurnar, við höfum bara smá séns að fluga 
+birtist í hverju \texttt{tick} kalli og þá gefum við henni staðsetningu 
+af handahófi en bara fyrir efri helming leikborðsins. Síðan erum við með 
+fylki sem heldur utan um allar flugur og við einfaldlega athugum alltaf 
+hvort spilari hafi náð flugu og ef svo er tökum við hana úr \texttt{scene} 
+og hækkum stigin. 
+
+Svo klárar spilari leikinn með því að koma fjórum froskum alla leið yfir 
+og fylla í öll fjögur hólfin. Þá er leik lokið og stig prentast út í 
+console.
+
+Við bjuggum síðan til nokkur einföld módel til að setja inn og notum bara 
+\texttt{GLTFLoader} frá THREE.js til að hlaða öllu inn og það er í raun 
+ekki mikið flóknara en það.
+
+
+\end{document}

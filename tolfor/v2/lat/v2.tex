@@ -24,7 +24,8 @@
 \usepackage{minted}
 \usemintedstyle{manni}
 \title{Tölvutækni og Forritun Verkefni 2}
-\author{Ragnar Björn Ingvarsson, rbi3}
+\author{Ragnar Björn Ingvarsson, rbi3 \\
+        Yi Hu, yih2}
 \tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
 
 \begin{document}
@@ -131,8 +132,42 @@ void accessData(mem_addr_t addr)
 	
 	\subsection{Hver er munurinn á bestu uppsetningu á milli 
 	rakningaskránna?}
+	Við sjáum af súluritunum að það er töluverður munur á keyrslu milli 
+	rakningaskránna. Fyrir \\ \texttt{mmulijk.trace} kemur langverst út að 
+	hafa $S$ mjög lítið, en svo er langbest að hafa það einhversstaðar 
+	í miðjunni um $16$-$32$, þar sem það virðist ekki vera betra að vera 
+	með of mörg mengi. 
 
+	Með \texttt{ls.trace} þá sést að það myndast dalur í 
+	ritinu, svo það er best sð vera aftur, í kring um $16$-$32$. 
+
+	Munurinn hér er væntanlega vegna þess að þar sem \texttt{ls.trace} 
+	er mjög óreglulegt og út um allt, þá er best að setja upp minnið okkar 
+	þannig að við séum með jafnan fjölda mengja og stærð línanna, þar sem 
+	ef við förum of langt í aðra hvora áttina þurfum við að leita svo djúpt
+	í staðinn fyrir að leita grunnt á báða ása. Þetta hjálpar að mynda eins 
+	mikið "bil" á milli gagnanna svo við lendum ekki í skellum.
+
+	\texttt{mmulijk.trace} er hins vegar mjög reglulegt og þess vegna 
+	viljum við notfæra okkur að gögnin eru alltaf hlið við hlið. Þess vegna 
+	er svo mikilvægt að hafa ekki of stórar línur því þá flækjast gögn 
+	kannski saman í línur og valda fleiri skellum, svo við viljum 
+	hafa nógu litlar línur til að bara halda utan um gögnin sem við erum 
+	nú þegar að vinna með en nógu stórar svo við séum heldur ekki að 
+	henda út gögnum sem við erum að nota. 
+
+	Svo besta uppsetningin fyrir \texttt{mmulijk} er $S=32$ á $LRU$ og 
+	fyrir \texttt{ls} er $S=16$ á $LRU$.
 
 	\subsection{Hvernig kemur uppsetning Intel Core i7 út í hermunum?}
+	Við sjáum að þetta er sama uppsetningin og við vorum að prófa og það 
+	sést á súluritunum að þetta er ekki besta uppsetningin hvorki fyrir 
+	\texttt{mmulijk.trace} né \texttt{ls.trace} en hún er samt alls ekki 
+	sú versta og kemur bara mjög vel út í báðum tilfellum. 
+
+	Ég myndi þá halda að ástæðan fyrir að velja svona uppsetningu sé 
+	vegna þess að hún sé kannski best ef við prófum yfir fleiri tilfelli 
+	af rakningaskrám og líka að það sé kannski betra fyrir orkusparnað 
+	eða pláss eða kostnað og svoleiðis. 
 	
 \end{document}

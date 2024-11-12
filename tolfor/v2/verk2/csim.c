@@ -80,10 +80,27 @@ void initCache()
        öll sviðin í öllum línum.
      */
 
-    cache = (cache_set_t*) malloc(S*sizeof(cache_set_t));
-	for (int i = 0; i < S; i++) {
-		cache[i] = (cache_line_t*) malloc(E*sizeof(cache_line_t));
-	}
+
+    cache = (cache_t) malloc(S * sizeof(cache_set_t));
+    if (cache == NULL) { // ef enhv fokkast upp i mallocation skrefinu
+        perror("nadi ekki ad allocatea cache");
+        exit(1); // haettir
+    }
+
+    for (int i = 0; i < S; i++){ // iterar i gegnum hvert mengi
+        cache[i] = (cache_set_t) malloc(E * sizeof(cache_line_t));
+        if (cache[i] == NULL){
+            perror("nadi ekki ad allocatea cache i sett [i]");
+            exit(1);
+        }
+
+        for (int j = 0; j < E; j++){ // iteratar yfir allar linur i hverju mengi
+            cache[i][j].valid = 0;   
+            cache[i][j].tag = 0; 
+            cache[i][j].lru = 0; 
+            cache[i][j].fifo = 0;    
+        }
+    }
 }
 
 
@@ -96,7 +113,8 @@ void freeCache()
     /* Þið þurfið að útfæra þetta fall sem skilar til baka úthlutuðu minni
      */
 
-	free(cache);
+    // notum bara free skipunina a hvert mengi ig????
+    free(cache); // allt fylkid af settum freed
 
 }
 
@@ -120,60 +138,58 @@ void accessData(mem_addr_t addr)
         6.  Annars þarf að velja línu til að henda út með réttri útskiptireglu
         7.  Setja nýja línu inn og uppfæra svið í sætinu.
      */
+    
+    int set_index = (addr >> b) & set_index_mask;
+    mem_addr_t tag = addr >> (b + s);
+
+    cache_set_t set = cache[set_index];
+    int hit = 0;
 
 
-	long set = (addr >> b) & ((1ULL << s) - 1);
-	long tag = addr >> (s+b);
 
-	int has_hit = 0;
-	int insert_place = -1;
-	int lowest_value = policy_code == 1 ? cache[set][0].lru : cache[set][0].fifo;
-	int lowest_index = 0;
+    for (int i = 0; i < E; i++){
+        if (set[i].valid && set[i].tag == tag) {
+            hit_count++;
+            hit = 1;
+            
+            set[i].lru = lru_counter++;
+            break;
+        }
+    }
 
-	if (policy_code == 3) {
+    if (!hit) {
+        miss_count++;
+        int eviction_index = -1;
+        unsigned long min_lru = ULLONG_MAX;
+        unsigned long min_fifo = ULLONG_MAX;
 
-	}
+        for (int i = 0; i < E; i++){
+            if (!set[i].valid){
+                eviction_index = i;
+                break;
+            }
 
-	for (int i = 0; i < E; i++) {
-
-		cache_line_t line = cache[set][i];
-
-		if (policy_code == 1) {
-			if (lowest_value > line.lru) {
-				lowest_value = line.lru;
-				lowest_index = i;
-			}
-		} else if (policy_code == 2) {
-			if (lowest_value > line.fifo) {
-				lowest_value = line.fifo;
-				lowest_index = i;
-			}
-		}
-
-		if (line.valid && line.tag == tag) {
-			line.lru = ++lru_counter;
-			hit_count++;
-			has_hit = 1;
-			cache[set][i] = line;
-			break;
-		}
-		if (!line.valid) {
-			insert_place = i;
-		}
-	}
-	if (!has_hit) {
-		miss_count++;
-		if (insert_place == -1) {
-			insert_place = policy_code == 3 ? rand() % E : lowest_index;
-			eviction_count++;
-		}
-		cache_line_t line_to_be_added;
-		line_to_be_added.tag = tag;
-		line_to_be_added.fifo = fifo_counter++;
-		line_to_be_added.lru = lru_counter++;
-		line_to_be_added.valid = 1;
-		cache[set][insert_place] = line_to_be_added;
-	}
+            if (policy_code == 1 && set[i].lru < min_lru) {
+                min_lru = set[i].lru;
+                eviction_index = 1i;           
+            }
+            
+            else if (policy_code == 2 && set[i].fifo < min_fifo){
+                min_fifo = set[i].fifo;
+                eviction_index = i;
+            }
+        }
+        
+        if (set[eviction_index].valid) {
+            eviction_count++;
+        }
+        
+        set[eviction_index].valid = 1;
+        set[eviction_index].tag = tag;
+        set[eviction_index].lru = ++lru_counter;
+        set[eviction_index].fifo = fifo_counter;
+        
+    }
 }
 
 
@@ -283,7 +299,6 @@ int main(int argc, char* argv[])
         printUsage(argv);
         exit(1);
    }
-
 
 	/* Compute s and b from command line args */
 	s = (unsigned int) log2(S);
