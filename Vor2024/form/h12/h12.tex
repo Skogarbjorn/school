@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[top=0.9in, bottom=1in, left=1.5in, right=1.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[parfill]{parskip}
+\renewcommand{\baselinestretch}{1.2}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{nicefrac}
+\usepackage{changepage}
+\usetikzlibrary{arrows, positioning, calc, graphs}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\usemintedstyle{manni}
+\title{Formal Languages and Computability 12}
+\author{Ragnar Björn Ingvarsson, rbi3}
+\tikzset{->, >=stealth', shorten >=1pt, node distance=2cm,thick, main node/.style={circle,draw,minimum size=3em}}
+
+\begin{document}
+\renewcommand\thepage{}
+
+	\maketitle
+
+	\newpage
+	\setcounter{page}{1}
+	\renewcommand\thepage{\arabic{page}}
+
+	\section{Let us consider the DPLL algorithm with}
+	\[
+			\Phi = (x_1\vee \overline{x}_4\vee x_3)\wedge
+			(\overline{x}_1\vee x_2\vee\overline{x}_4)\wedge
+			(\overline{x}_3\vee \overline{x}_4\vee x_2)\wedge
+			(\overline{x}_2\vee x_3\vee x_4)\wedge
+			(x_4)\wedge
+			(\overline{x}_1\vee \overline{x}_3\vee\overline{x}_4).
+	\]
+
+	\begin{itemize}
+		\item[a)] Carry out the unit clause propagation step for one (or 
+			more) unit clauses.
+		\item[b)] Identify pure literals, set them true, and simplify the 
+			expression further.
+	\end{itemize}
+
+	\section{Suppose a company has 5 contractors that supply the resources 
+	$a - d$.}
+
+\end{document}
